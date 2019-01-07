@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <account username="useragent1@primeruser.com" passwd="primeruseragent"/>
+    <uaserver ip="127.0.0.1" puerto="3006"/>
+    <rtpaudio puerto="7667"/>
+    <regproxy ip="127.0.0.1" puerto="4223"/>
+    <log path="ua1.txt"/>
+    <audio path="cancion.mp3"/>
+</config>
