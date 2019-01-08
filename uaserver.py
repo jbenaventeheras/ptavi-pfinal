@@ -77,3 +77,23 @@ if __name__ == '__main__':
             xml_file = sys.argv[1]
         else:
             sys.exit('file ' + sys.argv[1] + ' not found')
+
+    parser = make_parser()
+    xml_list = XMLHandler(att)
+    parser.setContentHandler(xml_list)
+    parser.parse(open(xml_file))
+    tags = xml_list.get_tags()
+    log = LOG(tags['log_path'])
+    log.starting()
+    if tags['uaserver_ip'] == '':
+        ip = '127.0.0.1'
+    else:
+        ip = tags['uaserver_ip']
+    port = int(tags['uaserver_puerto'])
+    server_address = ip + ':' + str(port)
+    server = socketserver.UDPServer((ip, port), SHandler)
+    print('Listening at ' + server_address + '...\r\n')
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        log.finishing()
