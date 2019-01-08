@@ -69,3 +69,11 @@ class SHandler(socketserver.DatagramRequestHandler):
             else:
                 print('bad request')
                 self.wfile.write(bytes(sip_mess['400'], 'utf-8'))
+if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        sys.exit(usage_error)
+    else:
+        if os.path.exists(sys.argv[1]):
+            xml_file = sys.argv[1]
+        else:
+            sys.exit('file ' + sys.argv[1] + ' not found')
