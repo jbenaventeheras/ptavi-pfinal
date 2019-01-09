@@ -1,6 +1,3 @@
-# /usr/bin/python3
-# -*- coding: utf-8 -*-
-
 import os
 import sys
 import json
@@ -27,6 +24,7 @@ sip_mess = {'100': 'SIP/2.0 100 Trying\r\n\r\n',
             '404': 'SIP/2.0 404 User Not Found\r\n\r\n',
             '405': 'SIP/2.0 405 Method Not Allowed\r\n\r\n'}
 
+
 def get_digest(nonce, passwd, encoding='utf-8'):
     digest = md5()
     digest.update(bytes(nonce, encoding))
@@ -37,9 +35,7 @@ def get_digest(nonce, passwd, encoding='utf-8'):
 
 
 class XMLHandler(ContentHandler):
-        """
-        Inicializamos las variables
-        """
+
     def __init__(self, att_list):
         self.conf = {}
         self.att = att_list
@@ -168,7 +164,6 @@ class SIPHandler(socketserver.DatagramRequestHandler):
             return reply
 
     def handle(self):
-
         self.json2register()
         self.json2passwd()
         self.expires_time()
@@ -228,8 +223,6 @@ class SIPHandler(socketserver.DatagramRequestHandler):
         elif 'INVITE' in data:
             sdp = data.split('\r\n\r\n')[1].split('\r\n')
             src = sdp[1].split()[0].split('=')[1]
-            print(src)
-            print(self.reg)
             if src in self.reg:
                 dst = data.split()[1].split(':')[1]
                 if dst in self.reg:
@@ -309,10 +302,13 @@ class SIPHandler(socketserver.DatagramRequestHandler):
         self.register2json()
 
 if __name__ == '__main__':
-
     if len(sys.argv) != 2:
         sys.exit(usage_error)
-    elif len(sys.argv) = 2:
+    else:
+        if os.path.exists(sys.argv[1]):
+            xml_file = sys.argv[1]
+        else:
+            sys.exit('file ' + sys.argv[1] + ' not found')
     parser = make_parser()
     xml_list = XMLHandler(att)
     parser.setContentHandler(xml_list)
@@ -333,10 +329,4 @@ if __name__ == '__main__':
         proxy.serve_forever()
     except KeyboardInterrupt:
         print('\nEnd ' + pr_name)
-    else:
-        if os.path.exists(sys.argv[1]):
-            xml_file = sys.argv[1]
-        else:
-            sys.exit('file ' + sys.argv[1] + ' not found')
-
-    log.finishing()
+log.finishing()
