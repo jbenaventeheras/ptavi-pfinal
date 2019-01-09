@@ -8,6 +8,7 @@ from xml.sax import make_parser
 from xml.sax.handler import ContentHandler
 from proxy_registrar import XMLHandler, LOG, sip_mess
 
+
 usage_error = 'usage error: python3 server.py <file.xml>'
 methods_allowed = 'invite', 'ack', 'bye'
 att = {'account': ['username', 'passwd'],
@@ -16,6 +17,7 @@ att = {'account': ['username', 'passwd'],
        'regproxy': ['ip', 'puerto'],
        'log': ['path'],
        'audio': ['path']}
+
 class SHandler(socketserver.DatagramRequestHandler):
     rtp = []
 
@@ -70,13 +72,6 @@ class SHandler(socketserver.DatagramRequestHandler):
                 print('bad request')
                 self.wfile.write(bytes(sip_mess['400'], 'utf-8'))
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        sys.exit(usage_error)
-    else:
-        if os.path.exists(sys.argv[1]):
-            xml_file = sys.argv[1]
-        else:
-            sys.exit('file ' + sys.argv[1] + ' not found')
 
     parser = make_parser()
     xml_list = XMLHandler(att)

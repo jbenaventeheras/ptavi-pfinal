@@ -37,7 +37,9 @@ def get_digest(nonce, passwd, encoding='utf-8'):
 
 
 class XMLHandler(ContentHandler):
-
+        """
+        Inicializamos las variables
+        """
     def __init__(self, att_list):
         self.conf = {}
         self.att = att_list
@@ -166,6 +168,7 @@ class SIPHandler(socketserver.DatagramRequestHandler):
             return reply
 
     def handle(self):
+
         self.json2register()
         self.json2passwd()
         self.expires_time()
@@ -306,13 +309,10 @@ class SIPHandler(socketserver.DatagramRequestHandler):
         self.register2json()
 
 if __name__ == '__main__':
+
     if len(sys.argv) != 2:
         sys.exit(usage_error)
-    else:
-        if os.path.exists(sys.argv[1]):
-            xml_file = sys.argv[1]
-        else:
-            sys.exit('file ' + sys.argv[1] + ' not found')
+    elif len(sys.argv) = 2:
     parser = make_parser()
     xml_list = XMLHandler(att)
     parser.setContentHandler(xml_list)
@@ -333,4 +333,10 @@ if __name__ == '__main__':
         proxy.serve_forever()
     except KeyboardInterrupt:
         print('\nEnd ' + pr_name)
+    else:
+        if os.path.exists(sys.argv[1]):
+            xml_file = sys.argv[1]
+        else:
+            sys.exit('file ' + sys.argv[1] + ' not found')
+
     log.finishing()
