@@ -225,6 +225,8 @@ class SIPHandler(socketserver.DatagramRequestHandler):
         elif 'INVITE' in data:
             sdp = data.split('\r\n\r\n')[1].split('\r\n')
             src = sdp[1].split()[0].split('=')[1]
+            print(src)
+            print(self.reg)
             if src in self.reg:
                 dst = data.split()[1].split(':')[1]
                 if dst in self.reg:

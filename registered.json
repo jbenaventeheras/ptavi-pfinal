@@ -1,0 +1,10 @@
+{
+   "useragent1@primeruser.com": {
+      "server_port": "3006",
+      "expires": "09/01/2019 01:13:27"
+   },
+   "useragent2@segundouser.com": {
+      "server_port": "3007",
+      "expires": "09/01/2019 01:17:06"
+   }
+}

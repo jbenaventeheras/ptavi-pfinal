@@ -1,0 +1,105 @@
+20190108235331 Starting...
+20190108235331 Sent to: 127.0.0.1:4223: REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 0   
+20190108235331 Received from: 127.0.0.1:4223 SIP/2.0 401 Unauthorized WWW Auhenticate: Digest nonce="73354185374"   
+20190108235331 Sent to: 127.0.0.1:4223: REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 0 Authorization: Digest response="5f6833c216eae80ef2eac204d62c36c3"   
+20190108235331 Received from: 127.0.0.1:4223 SIP/2.0 200 OK   
+20190108235331 Finishing
+20190108235404 Starting...
+20190108235404 Sent to: 127.0.0.1:4223: BYE sip:useragent1@primeruser.com SIP/2.0   
+20190108235404 Received from: 127.0.0.1:4223 SIP/2.0 404 User Not Found   
+20190108235404 Finishing
+20190108235413 Starting...
+20190108235413 Sent to: 127.0.0.1:4223: BYE sip:useragent1@primeruser.co SIP/2.0   
+20190108235413 Received from: 127.0.0.1:4223 SIP/2.0 404 User Not Found   
+20190108235413 Finishing
+20190108235521 Starting...
+20190108235521 Sent to: 127.0.0.1:4223: INVITE sip:useragent2@segundouser.com SIP/2.0 Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP   
+20190108235521 Received from: 127.0.0.1:4223 SIP/2.0 404 User Not Found   
+20190108235521 Finishing
+20190108235557 Starting...
+20190108235557 Sent to: 127.0.0.1:4223: INVITE sip:useragent2@segundouser.com SIP/2.0 Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP   
+20190108235557 Received from: 127.0.0.1:4223 SIP/2.0 404 User Not Found   
+20190108235557 Finishing
+20190108235604 Starting...
+20190108235604 Sent to: 127.0.0.1:4223: INVITE sip:useragent2@segundouser.com SIP/2.0 Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP   
+20190108235604 Received from: 127.0.0.1:4223 SIP/2.0 404 User Not Found   
+20190108235604 Finishing
+20190108235857 Starting...
+20190108235857 Sent to: 127.0.0.1:4223: INVITE sip:k SIP/2.0 Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP   
+20190108235857 Received from: 127.0.0.1:4223 SIP/2.0 404 User Not Found   
+20190108235857 Finishing
+20190108235903 Starting...
+20190108235903 Sent to: 127.0.0.1:4223: INVITE sip:k SIP/2.0 Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP   
+20190108235903 Received from: 127.0.0.1:4223 SIP/2.0 404 User Not Found   
+20190108235903 Finishing
+20190109000609 Starting...
+20190109000609 Sent to: 127.0.0.1:4223: INVITE sip:k SIP/2.0 Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP   
+20190109000609 Received from: 127.0.0.1:4223 SIP/2.0 404 User Not Found   
+20190109000609 Finishing
+20190109000848 Starting...
+20190109000848 Sent to: 127.0.0.1:4223: INVITE sip:k SIP/2.0 Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP   
+20190109000848 Received from: 127.0.0.1:4223 SIP/2.0 404 User Not Found   
+20190109000848 Finishing
+20190109000954 Starting...
+20190109000954 Sent to: 127.0.0.1:4223: REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 3600   
+20190109000954 Received from: 127.0.0.1:4223 SIP/2.0 401 Unauthorized WWW Auhenticate: Digest nonce="48048720179"   
+20190109000954 Sent to: 127.0.0.1:4223: REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 3600 Authorization: Digest response="7c141f89f53238c8a9872d3928900eb2"   
+20190109000954 Received from: 127.0.0.1:4223 SIP/2.0 200 OK   
+20190109000954 Finishing
+20190109001007 Starting...
+20190109001007 Sent to: 127.0.0.1:4223: INVITE sip:s SIP/2.0 Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP   
+20190109001007 Received from: 127.0.0.1:4223 SIP/2.0 404 User Not Found   
+20190109001007 Finishing
+20190109001025 Starting...
+20190109001025 Sent to: 127.0.0.1:4223: INVITE sip:s SIP/2.0 Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP   
+20190109001025 Received from: 127.0.0.1:4223 SIP/2.0 404 User Not Found   
+20190109001025 Finishing
+20190109001105 Starting...
+20190109001105 Sent to: 127.0.0.1:4223: INVITE sip:useragent1@primeruser.com SIP/2.0 Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP   
+20190109001105 Received from: 127.0.0.1:4223  
+20190109001105 Finishing
+20190109001130 Starting...
+20190109001130 Sent to: 127.0.0.1:4223: INVITE sip:useragent2@segundouser.com SIP/2.0 Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP   
+20190109001130 Received from: 127.0.0.1:4223 SIP/2.0 404 User Not Found   
+20190109001130 Finishing
+20190109001203 Starting...
+20190109001203 Sent to: 127.0.0.1:4223: INVITE sip:useragent1@primeruser.com SIP/2.0 Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP   
+20190109001203 Received from: 127.0.0.1:4223  
+20190109001203 Finishing
+20190109001213 Starting...
+20190109001213 Sent to: 127.0.0.1:4223: INVITE sip:useragent1@primeruser.com SIP/2.0 Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP   
+20190109001213 Received from: 127.0.0.1:4223  
+20190109001213 Finishing
+20190109001300 Starting...
+20190109001300 Sent to: 127.0.0.1:4223: BYE sip:useragent1@primeruser.com SIP/2.0   
+20190109001300 Received from: 127.0.0.1:4223  
+20190109001300 Finishing
+20190109001327 Starting...
+20190109001327 Sent to: 127.0.0.1:4223: REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 3600   
+20190109001327 Received from: 127.0.0.1:4223 SIP/2.0 200 OK   
+20190109001327 Finishing
+20190109001342 Starting...
+20190109001342 Sent to: 127.0.0.1:4223: BYE sip:useragent1@p SIP/2.0   
+20190109001342 Received from: 127.0.0.1:4223 SIP/2.0 404 User Not Found   
+20190109001342 Finishing
+20190109001353 Starting...
+20190109001353 Sent to: 127.0.0.1:4223: BYE sip:useragent1@primeruser.com SIP/2.0   
+20190109001353 Received from: 127.0.0.1:4223  
+20190109001353 Finishing
+20190109001404 Starting...
+20190109001404 Sent to: 127.0.0.1:4223: INVITE sip:useragent2@segundouser.com SIP/2.0 Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP   
+20190109001404 Received from: 127.0.0.1:4223 SIP/2.0 404 User Not Found   
+20190109001404 Finishing
+20190109001412 Starting...
+20190109001412 Sent to: 127.0.0.1:4223: INVITE sip:d SIP/2.0 Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP   
+20190109001412 Received from: 127.0.0.1:4223 SIP/2.0 404 User Not Found   
+20190109001412 Finishing
+20190109001712 Starting...
+20190109001712 Sent to: 127.0.0.1:4223: INVITE sip:useragent2@segundouser.com SIP/2.0 Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP   
+20190109001712 Received from: 127.0.0.1:4223 SIP/2.0 100 Trying  SIP/2.0 180 Ringing  SIP/2.0 200 OK  Content-Type: application/sdp  v=0 o=useragent2@segundouser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7887 RTP 
+20190109001712 Sent to: 127.0.0.1:4223: ACK sip:useragent2@segundouser.com SIP/2.0   
+20190109001713 Finishing
+20190109002019 Starting...
+20190109002019 Sent to: 127.0.0.1:4223: BYE sip:useragent2@segundouser.com SIP/2.0   
+20190109002019 Received from: 127.0.0.1:4223 SIP/2.0 200 OK   
+20190109002019 Finishing
