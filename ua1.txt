@@ -141,3 +141,87 @@
 20190109193625 Sent to: 127.0.0.1:4223: BYE sip:useragent1@primeruser.com SIP/2.0   
 20190109193625 Error: Connection refused
 20190109193731 Starting...
+20190109200545 Starting...
+20190109200545 Sent to: 127.0.0.1:4223: REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 3600   
+20190109200545 Received from: 127.0.0.1:4223 SIP/2.0 200 OK   
+20190109200545 Finishing
+20190109200814 Finishing
+20190109200822 Starting...
+20190109200843 Starting...
+20190109200843 Sent to: 127.0.0.1:4223: REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 3600   
+20190109200843 Received from: 127.0.0.1:4223 SIP/2.0 200 OK   
+20190109200843 Finishing
+20190109200910 Starting...
+20190109200910 Sent to: 127.0.0.1:4223: INVITE sip:useragent1@primeruser.com SIP/2.0 Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP   
+20190109200910 Received from: 127.0.0.1:42438 INVITE sip:useragent1@primeruser.com SIP/2.0 Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP   
+20190109200910 Sent to: 127.0.0.1:3006: SIP/2.0 100 Trying   
+20190109200910 Sent to: 127.0.0.1:3006: SIP/2.0 180 Ringing   
+20190109200910 Sent to: 127.0.0.1:3006: SIP/2.0 200 OK  Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP 
+20190109200910 Received from: 127.0.0.1:4223 SIP/2.0 100 Trying  SIP/2.0 180 Ringing  SIP/2.0 200 OK  Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP 
+20190109200910 Sent to: 127.0.0.1:4223: ACK sip:useragent1@primeruser.com SIP/2.0   
+20190109200910 Received from: 127.0.0.1:41392 ACK sip:useragent1@primeruser.com SIP/2.0   
+20190109200934 Starting...
+20190109200934 Sent to: 127.0.0.1:4223: BYE sip:useragent1@primeruser.com SIP/2.0   
+20190109200942 Error: Connection refused
+20190109201600 Received from: 127.0.0.1:36853 BYE sip:useragent1@primeruser.com SIP/2.0   
+20190109201600 Received from: 127.0.0.1:58306 BYE sip:useragent1@primeruser.com SIP/2.0   
+20190109201601 Received from: 127.0.0.1:41955 BYE sip:useragent1@primeruser.com SIP/2.0   
+20190109201601 Received from: 127.0.0.1:53667 BYE sip:useragent1@primeruser.com SIP/2.0   
+20190109201604 Finishing
+20190109201610 Finishing
+20190109201624 Starting...
+20190109201743 Starting...
+20190109201743 Sent to: 127.0.0.1:4223: REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 3600   
+20190109201743 Received from: 127.0.0.1:4223 SIP/2.0 200 OK   
+20190109201743 Finishing
+20190109201919 Starting...
+20190109201945 Starting...
+20190109201945 Sent to: 127.0.0.1:4223: REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 3600   
+20190109201945 Received from: 127.0.0.1:4223 SIP/2.0 200 OK   
+20190109201945 Finishing
+20190109202019 Received from: 127.0.0.1:37159 INVITE sip:useragent1@primeruser.com SIP/2.0 Content-Type: application/sdp  v=0 o=useragent2@segundouser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7887 RTP   
+20190109202019 Sent to: 127.0.0.1:3006: SIP/2.0 100 Trying   
+20190109202019 Sent to: 127.0.0.1:3006: SIP/2.0 180 Ringing   
+20190109202019 Sent to: 127.0.0.1:3006: SIP/2.0 200 OK  Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP 
+20190109202019 Received from: 127.0.0.1:36475 ACK sip:useragent1@primeruser.com SIP/2.0   
+20190109202249 Received from: 127.0.0.1:52325 BYE sip:useragent1@primeruser.com SIP/2.0   
+20190109202249 Finishing
+20190109202708 Starting...
+20190109202714 Finishing
+20190109202730 Starting...
+20190109202730 Sent to: 127.0.0.1:4223: REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 3600   
+20190109202730 Error: Connection refused
+20190109202808 Starting...
+20190109202808 Sent to: 127.0.0.1:4223: REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 3600   
+20190109202808 Received from: 127.0.0.1:4223 SIP/2.0 200 OK   
+20190109202808 Finishing
+20190109202834 Starting...
+20190109202834 Sent to: 127.0.0.1:4223: INVITE sip:useragent2@segundouser.com SIP/2.0 Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP   
+20190109202834 Received from: 127.0.0.1:4223 SIP/2.0 100 Trying  SIP/2.0 180 Ringing  SIP/2.0 200 OK  Content-Type: application/sdp  v=0 o=useragent2@segundouser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7887 RTP 
+20190109202834 Sent to: 127.0.0.1:4223: ACK sip:useragent2@segundouser.com SIP/2.0   
+20190109202848 Finishing
+20190109203333 Starting...
+20190109203333 Sent to: 127.0.0.1:4223: REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 3600   
+20190109203333 Received from: 127.0.0.1:4223 SIP/2.0 200 OK   
+20190109203333 Finishing
+20190109203352 Starting...
+20190109203352 Sent to: 127.0.0.1:4223: INVITE sip:useragent2@segundouser.com SIP/2.0 Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP   
+20190109203352 Received from: 127.0.0.1:4223 SIP/2.0 100 Trying  SIP/2.0 180 Ringing  SIP/2.0 200 OK  Content-Type: application/sdp  v=0 o=useragent2@segundouser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7887 RTP 
+20190109203352 Sent to: 127.0.0.1:4223: ACK sip:useragent2@segundouser.com SIP/2.0   
+20190109203420 Finishing
+20190109203504 Starting...
+20190109203504 Sent to: 127.0.0.1:4223: INVITE sip:useragent1@segundouser.com SIP/2.0 Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP   
+20190109203507 Error: Connection refused
+20190109203618 Starting...
+20190109203618 Sent to: 127.0.0.1:4223: REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 3600   
+20190109203618 Received from: 127.0.0.1:4223 SIP/2.0 200 OK   
+20190109203618 Finishing
+20190109203729 Starting...
+20190109203729 Sent to: 127.0.0.1:4223: REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 3600   
+20190109203729 Received from: 127.0.0.1:4223 SIP/2.0 200 OK   
+20190109203729 Finishing
+20190109203906 Starting...
+20190109203906 Sent to: 127.0.0.1:4223: INVITE sip:useragent2@segundouser.com SIP/2.0 Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP   
+20190109203906 Received from: 127.0.0.1:4223 SIP/2.0 100 Trying  SIP/2.0 180 Ringing  SIP/2.0 200 OK  Content-Type: application/sdp  v=0 o=useragent2@segundouser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7887 RTP 
+20190109203906 Sent to: 127.0.0.1:4223: ACK sip:useragent2@segundouser.com SIP/2.0   
+20190109203921 Finishing
