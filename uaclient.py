@@ -4,7 +4,7 @@ import time
 import socket
 
 from xml.sax import make_parser
-from proxy_registrar import XMLHandler, LOG, get_digest
+from uaserver import XMLHandler, LOGGIN, get_digest
 
 usage_error = 'usage error: python3 client.py <file.xml> <method> <option>'
 methods_allowed = 'register, invite, bye, ack'
@@ -14,7 +14,7 @@ att = {'account': ['username', 'passwd'],
        'regproxy': ['ip', 'puerto'],
        'log': ['path'],
        'audio': ['path']}
-       
+
 class SIPMessages:
     def __init__(self, user, port, ip, rtp_port):
         self.src = {'user': user, 'ip': ip, 'port': port, 'rtp_port': rtp_port}
@@ -34,25 +34,15 @@ class SIPMessages:
 
         return line
 
-    def bye(self, option):
-        line = 'BYE sip:' + option + ' SIP/2.0\r\n'
-
-        return line
-
-    def ack(self, option):
-        line = 'ACK sip:' + option + ' SIP/2.0\r\n'
-
-        return line
-
     def get_mess(self, method, option):
         if str.lower(method) == 'register':
             return self.register(option)
         elif str.lower(method) == 'invite':
             return self.invite(option)
         elif str.lower(method) == 'bye':
-            return self.bye(option)
+            return 'BYE sip:' + option + ' SIP/2.0\r\n'
         elif str.lower(method) == 'ack':
-            return self.ack(option)
+            return 'ACK sip:' + option + ' SIP/2.0\r\n'
 
 if __name__ == '__main__':
     if len(sys.argv) != 4:
@@ -69,8 +59,7 @@ if __name__ == '__main__':
     parser.setContentHandler(xml_list)
     parser.parse(open(xml_file))
     tags = xml_list.get_tags()
-    log = LOG(tags['log_path'])
-
+    log = LOGGIN(tags['log_path'])
     user = tags['account_username']
     psswd = tags['account_passwd']
     port = tags['uaserver_puerto']

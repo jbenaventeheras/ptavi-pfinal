@@ -6,9 +6,9 @@ import socket
 import random
 import socketserver
 
-from hashlib import md5
 from xml.sax import make_parser
 from xml.sax.handler import ContentHandler
+from uaserver import XMLHandler, LOGGIN, sip_mess, get_digest
 
 att = {'server': ['name', 'ip', 'puerto'],
        'database': ['path', 'passwdpath'],
@@ -16,90 +16,6 @@ att = {'server': ['name', 'ip', 'puerto'],
 date_log = '%Y%m%d%H%M%S'
 date_reg = '%d/%m/%Y %H:%M:%S'
 usage_error = 'usage error: python3 proxy.py <file.xml>'
-sip_mess = {'100': 'SIP/2.0 100 Trying\r\n\r\n',
-            '180': 'SIP/2.0 180 Ringing\r\n\r\n',
-            '200': 'SIP/2.0 200 OK\r\n\r\n',
-            '400': 'SIP/2.0 400 Bad Request\r\n\r\n',
-            '401': 'SIP/2.0 401 Unauthorized\r\n\r\n',
-            '404': 'SIP/2.0 404 User Not Found\r\n\r\n',
-            '405': 'SIP/2.0 405 Method Not Allowed\r\n\r\n'}
-
-
-def get_digest(nonce, passwd, encoding='utf-8'):
-    digest = md5()
-    digest.update(bytes(nonce, encoding))
-    digest.update(bytes(passwd, encoding))
-    digest.digest()
-
-    return digest.hexdigest()
-
-
-class XMLHandler(ContentHandler):
-
-    def __init__(self, att_list):
-        self.conf = {}
-        self.att = att_list
-
-    def startElement(self, name, attrs):
-        if name in self.att:
-            for att in self.att[name]:
-                self.conf[name + "_" + att] = attrs.get(att, '')
-
-    def get_tags(self):
-        return self.conf
-
-
-class LOG:
-
-    def __init__(self, file_name):
-        if not os.path.exists(file_name):
-            os.system('touch ' + file_name)
-        self.file = file_name
-
-    def starting(self):
-        now = time.gmtime(time.time() + 3600)
-        log = open(self.file, 'a')
-        log.write(time.strftime((date_log), now) + ' Starting...\n')
-        log.close()
-
-    def error(self, message):
-        now = time.gmtime(time.time() + 3600)
-        error_message = ' Error: ' + message + '\n'
-        log = open(self.file, 'a')
-        log.write(time.strftime((date_log), now) + error_message)
-        log.close()
-
-    def sent_to(self, address, message):
-        line = ''
-        for part in message.split('\r\n'):
-            if part != '':
-                line += part
-            line += ' '
-        line += '\n'
-        now = time.gmtime(time.time() + 3600)
-        sent_message = ' Sent to: ' + address + ': ' + line
-        log = open(self.file, 'a')
-        log.write(time.strftime((date_log), now) + sent_message)
-        log.close()
-
-    def received_from(self, address, message):
-        line = ''
-        for part in message.split('\r\n'):
-            if part != '':
-                line += part
-            line += ' '
-        line += '\n'
-        now = time.gmtime(time.time() + 3600)
-        received_message = ' Received from: ' + address + ' ' + line
-        log = open(self.file, 'a')
-        log.write(time.strftime((date_log), now) + received_message)
-        log.close()
-
-    def finishing(self):
-        now = time.gmtime(time.time() + 3600)
-        log = open(self.file, 'a')
-        log.write(time.strftime((date_log), now) + ' Finishing\n')
-        log.close()
 
 
 class SIPHandler(socketserver.DatagramRequestHandler):
@@ -107,28 +23,6 @@ class SIPHandler(socketserver.DatagramRequestHandler):
     pwd = {}
     sesions = {}
     nonce = {}
-
-    def json2register(self):
-        try:
-            with open(tags['database_path'], 'r') as jsonfile:
-                self.reg = json.load(jsonfile)
-        except:
-            pass
-
-    def json2passwd(self):
-        try:
-            with open(tags['database_passwdpath'], 'r') as jsonfile:
-                self.pwd = json.load(jsonfile)
-        except:
-            pass
-
-    def register2json(self):
-        with open(tags['database_path'], 'w') as jsonfile:
-            json.dump(self.reg, jsonfile, indent=3)
-
-    def passwd2json(self):
-        with open(tags['database_passwdpath'], 'w') as jsonfile:
-            json.dump(self.pwd, jsonfile, indent=3)
 
     def expires_time(self):
         user_del = []
@@ -164,8 +58,19 @@ class SIPHandler(socketserver.DatagramRequestHandler):
             return reply
 
     def handle(self):
-        self.json2register()
-        self.json2passwd()
+
+        try:
+            with open(tags['database_path'], 'r') as jsonfile:
+                self.reg = json.load(jsonfile)
+        except:
+            pass
+
+        try:
+            with open(tags['database_passwdpath'], 'r') as jsonfile:
+                self.pwd = json.load(jsonfile)
+        except:
+            pass
+
         self.expires_time()
 
         address = self.client_address[0] + ':' + str(self.client_address[1])
@@ -298,8 +203,13 @@ class SIPHandler(socketserver.DatagramRequestHandler):
                 print('method not allowed')
 
         self.expires_time()
-        self.passwd2json()
-        self.register2json()
+
+        with open(tags['database_passwdpath'], 'w') as jsonfile:
+            json.dump(self.pwd, jsonfile, indent=3)
+
+        with open(tags['database_path'], 'w') as jsonfile:
+            json.dump(self.reg, jsonfile, indent=3)
+
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
@@ -314,7 +224,7 @@ if __name__ == '__main__':
     parser.setContentHandler(xml_list)
     parser.parse(open(xml_file))
     tags = xml_list.get_tags()
-    log = LOG(tags['log_path'])
+    log = LOGGIN(tags['log_path'])
     pr_name = tags['server_name']
     if tags['server_ip'] == '':
         pr_ip = '127.0.0.1'
@@ -329,4 +239,4 @@ if __name__ == '__main__':
         proxy.serve_forever()
     except KeyboardInterrupt:
         print('\nEnd ' + pr_name)
-log.finishing()
+        log.finishing()

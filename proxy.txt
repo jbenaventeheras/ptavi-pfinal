@@ -75,3 +75,37 @@
 20190109002019 Received from: 127.0.0.1:54038 BYE sip:useragent2@segundouser.com SIP/2.0   
 20190109002019 Sent to: 127.0.0.1:3007: BYE sip:useragent2@segundouser.com SIP/2.0   
 20190109030540 Finishing
+20190109185512 Starting...
+20190109185516 Finishing
+20190109185747 Starting...
+20190109185749 Finishing
+20190109185914 Starting...
+20190109185916 Finishing
+20190109190848 Starting...
+20190109190927 Starting...
+20190109190944 Starting...
+20190109191019 Received from: 127.0.0.1:39883 REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 3600   
+20190109191019 Sent to: 127.0.0.1:39883: SIP/2.0 401 Unauthorized WWW Auhenticate: Digest nonce="35950197293"   
+20190109191035 Received from: 127.0.0.1:46026 REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 3600   
+20190109191035 Sent to: 127.0.0.1:46026: SIP/2.0 401 Unauthorized WWW Auhenticate: Digest nonce="54028846812"   
+20190109191125 Received from: 127.0.0.1:38555 REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 3600   
+20190109191125 Sent to: 127.0.0.1:38555: SIP/2.0 401 Unauthorized WWW Auhenticate: Digest nonce="62941849410"   
+20190109191125 Received from: 127.0.0.1:38555 REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 3600 Authorization: Digest response="0b08dce9f98b85bf4155297589ce4192"   
+20190109191152 Finishing
+20190109191153 Starting...
+20190109191202 Received from: 127.0.0.1:36677 REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 3600   
+20190109191202 Sent to: 127.0.0.1:36677: SIP/2.0 401 Unauthorized WWW Auhenticate: Digest nonce="15576135210"   
+20190109191202 Received from: 127.0.0.1:36677 REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 3600 Authorization: Digest response="2067320c042b7771afd9a8701d63d9cc"   
+20190109191202 Sent to: 127.0.0.1:36677: SIP/2.0 200 OK   
+20190109191230 Received from: 127.0.0.1:33092 REGISTER sip:useragent2@segundouser.com:3007 SIP/2.0 Expires: 3600   
+20190109191230 Sent to: 127.0.0.1:33092: SIP/2.0 401 Unauthorized WWW Auhenticate: Digest nonce="73820220302"   
+20190109191230 Received from: 127.0.0.1:33092 REGISTER sip:useragent2@segundouser.com:3007 SIP/2.0 Expires: 3600 Authorization: Digest response="a051b5d3d939eb8887825479f26a15e1"   
+20190109191230 Sent to: 127.0.0.1:33092: SIP/2.0 200 OK   
+20190109191310 Received from: 127.0.0.1:59739 INVITE sip:useragent1@primeruser.com SIP/2.0 Content-Type: application/sdp  v=0 o=useragent2@segundouser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7887 RTP   
+20190109191310 Sent to: 127.0.0.1:3006: INVITE sip:useragent1@primeruser.com SIP/2.0 Content-Type: application/sdp  v=0 o=useragent2@segundouser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7887 RTP   
+20190109191310 Received from: 127.0.0.1:59739 ACK sip:useragent1@primeruser.com SIP/2.0   
+20190109191310 Sent to: 127.0.0.1:3006: ACK sip:useragent1@primeruser.com SIP/2.0   
+20190109192956 Finishing
+20190109193057 Starting...
+20190109193059 Finishing
+20190109193734 Starting...

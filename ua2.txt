@@ -12,3 +12,14 @@
 20190109001712 Received from: 127.0.0.1:42973 ACK sip:useragent2@segundouser.com SIP/2.0   
 20190109002019 Received from: 127.0.0.1:53872 BYE sip:useragent2@segundouser.com SIP/2.0   
 20190109030542 Finishing
+20190109191230 Starting...
+20190109191230 Sent to: 127.0.0.1:4223: REGISTER sip:useragent2@segundouser.com:3007 SIP/2.0 Expires: 3600   
+20190109191230 Received from: 127.0.0.1:4223 SIP/2.0 401 Unauthorized WWW Auhenticate: Digest nonce="73820220302"   
+20190109191230 Sent to: 127.0.0.1:4223: REGISTER sip:useragent2@segundouser.com:3007 SIP/2.0 Expires: 3600 Authorization: Digest response="a051b5d3d939eb8887825479f26a15e1"   
+20190109191230 Received from: 127.0.0.1:4223 SIP/2.0 200 OK   
+20190109191230 Finishing
+20190109191310 Starting...
+20190109191310 Sent to: 127.0.0.1:4223: INVITE sip:useragent1@primeruser.com SIP/2.0 Content-Type: application/sdp  v=0 o=useragent2@segundouser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7887 RTP   
+20190109191310 Received from: 127.0.0.1:4223 SIP/2.0 100 Trying  SIP/2.0 180 Ringing  SIP/2.0 200 OK  Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP 
+20190109191310 Sent to: 127.0.0.1:4223: ACK sip:useragent1@primeruser.com SIP/2.0   
+20190109192957 Finishing

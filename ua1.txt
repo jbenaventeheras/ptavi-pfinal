@@ -103,3 +103,41 @@
 20190109002019 Sent to: 127.0.0.1:4223: BYE sip:useragent2@segundouser.com SIP/2.0   
 20190109002019 Received from: 127.0.0.1:4223 SIP/2.0 200 OK   
 20190109002019 Finishing
+20190109190439 Starting...
+20190109190440 Finishing
+20190109190816 Starting...
+20190109190818 Finishing
+20190109190939 Starting...
+20190109191019 Starting...
+20190109191019 Sent to: 127.0.0.1:4223: REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 3600   
+20190109191019 Received from: 127.0.0.1:4223 SIP/2.0 401 Unauthorized WWW Auhenticate: Digest nonce="35950197293"   
+20190109191035 Starting...
+20190109191035 Sent to: 127.0.0.1:4223: REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 3600   
+20190109191035 Received from: 127.0.0.1:4223 SIP/2.0 401 Unauthorized WWW Auhenticate: Digest nonce="54028846812"   
+20190109191125 Starting...
+20190109191125 Sent to: 127.0.0.1:4223: REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 3600   
+20190109191125 Received from: 127.0.0.1:4223 SIP/2.0 401 Unauthorized WWW Auhenticate: Digest nonce="62941849410"   
+20190109191125 Sent to: 127.0.0.1:4223: REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 3600 Authorization: Digest response="0b08dce9f98b85bf4155297589ce4192"   
+20190109191125 Received from: 127.0.0.1:4223  
+20190109191125 Finishing
+20190109191202 Starting...
+20190109191202 Sent to: 127.0.0.1:4223: REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 3600   
+20190109191202 Received from: 127.0.0.1:4223 SIP/2.0 401 Unauthorized WWW Auhenticate: Digest nonce="15576135210"   
+20190109191202 Sent to: 127.0.0.1:4223: REGISTER sip:useragent1@primeruser.com:3006 SIP/2.0 Expires: 3600 Authorization: Digest response="2067320c042b7771afd9a8701d63d9cc"   
+20190109191202 Received from: 127.0.0.1:4223 SIP/2.0 200 OK   
+20190109191202 Finishing
+20190109191310 Received from: 127.0.0.1:48853 INVITE sip:useragent1@primeruser.com SIP/2.0 Content-Type: application/sdp  v=0 o=useragent2@segundouser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7887 RTP   
+20190109191310 Sent to: 127.0.0.1:3006: SIP/2.0 100 Trying   
+20190109191310 Sent to: 127.0.0.1:3006: SIP/2.0 180 Ringing   
+20190109191310 Sent to: 127.0.0.1:3006: SIP/2.0 200 OK  Content-Type: application/sdp  v=0 o=useragent1@primeruser.com 127.0.0.1 s=Super-Sesion t=0 m=audio 7667 RTP 
+20190109191310 Received from: 127.0.0.1:54502 ACK sip:useragent1@primeruser.com SIP/2.0   
+20190109192959 Finishing
+20190109193115 Starting...
+20190109193116 Finishing
+20190109193507 Starting...
+20190109193507 Sent to: 127.0.0.1:4223: BYE sip:useragent1@primeruser.com SIP/2.0   
+20190109193507 Error: Connection refused
+20190109193625 Starting...
+20190109193625 Sent to: 127.0.0.1:4223: BYE sip:useragent1@primeruser.com SIP/2.0   
+20190109193625 Error: Connection refused
+20190109193731 Starting...
