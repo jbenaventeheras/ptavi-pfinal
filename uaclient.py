@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+"""Clase SIPMessages y principal del client."""
 import os
 import sys
 import time
@@ -17,16 +20,21 @@ att = {'account': ['username', 'passwd'],
 
 
 class SIPMessages:
+    """Clase SIPMessages."""
+
     def __init__(self, user, port, ip, rtp_port):
+        """Inicia user ip port rtp_port."""
         self.src = {'user': user, 'ip': ip, 'port': port, 'rtp_port': rtp_port}
 
     def register(self, option):
+        """retorna linea con SIP de register."""
         line = 'REGISTER sip:' + self.src['user'] + ':' + self.src['port']
         line += ' SIP/2.0\r\nExpires: ' + option + '\r\n'
 
         return line
 
     def invite(self, option):
+        """retorna linea con SIP de INVITE."""
         line = 'INVITE sip:' + option + ' SIP/2.0\r\n'
         line += 'Content-Type: application/sdp\r\n\r\nv=0\r\n'
         line += 'o=' + self.src['user'] + ' ' + self.src['ip'] + '\r\n'
@@ -36,6 +44,7 @@ class SIPMessages:
         return line
 
     def get_mess(self, method, option):
+        """retorna el mensaje ya formado que se eligio del terminal."""
         if str.lower(method) == 'register':
             return self.register(option)
         elif str.lower(method) == 'invite':
