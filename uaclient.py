@@ -15,6 +15,7 @@ att = {'account': ['username', 'passwd'],
        'log': ['path'],
        'audio': ['path']}
 
+
 class SIPMessages:
     def __init__(self, user, port, ip, rtp_port):
         self.src = {'user': user, 'ip': ip, 'port': port, 'rtp_port': rtp_port}
@@ -44,7 +45,9 @@ class SIPMessages:
         elif str.lower(method) == 'ack':
             return 'ACK sip:' + option + ' SIP/2.0\r\n'
 
+
 if __name__ == '__main__':
+
     if len(sys.argv) != 4:
         sys.exit(usage_error)
     else:
@@ -103,8 +106,6 @@ if __name__ == '__main__':
                         cvlc = 'cvlc rtp://@' + ip + ':' + port
                         my_socket.send(bytes(line, 'utf-8'))
                         log.sent_to(pr_address, line)
-                        #print('running: ' + mp32rtp)
-                        #os.system(mp32rtp)
                         print('running: ' + cvlc + ' && ' + mp32rtp)
                         os.system(cvlc + ' && ' + mp32rtp)
             elif '200' in data:

@@ -148,8 +148,6 @@ class SHandler(socketserver.DatagramRequestHandler):
                     mp32rtp += ' -p ' + self.rtp[1]
                     mp32rtp += ' < ' + tags['audio_path']
                     cvlc = 'cvlc rtp://@' + self.rtp[0] + ':' + self.rtp[1]
-                    #print('running: ' + mp32rtp)
-                    #os.system(mp32rtp)
                     print('running: ' + cvlc + ' && ' + mp32rtp)
                     os.system(cvlc + ' && ' + mp32rtp)
                 elif 'BYE' in data:
@@ -158,7 +156,10 @@ class SHandler(socketserver.DatagramRequestHandler):
             else:
                 print('bad request')
                 self.wfile.write(bytes(sip_mess['400'], 'utf-8'))
+
+
 if __name__ == '__main__':
+
     if len(sys.argv) != 2:
         sys.exit(usage_error)
     else:
