@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+"""Clase SIPHandler y principal para funciones de proxy y registrar."""
 import os
 import sys
 import json
@@ -19,12 +22,15 @@ usage_error = 'usage error: python3 proxy.py <file.xml>'
 
 
 class SIPHandler(socketserver.DatagramRequestHandler):
+    """SIPHandler funciones y handler maneja SIP del proxy."""
+
     reg = {}
     pwd = {}
     sesions = {}
     nonce = {}
 
     def expires_time(self):
+        """Busqueda de clientes caducados."""
         user_del = []
         now = time.gmtime(time.time() + 3600)
         try:
@@ -37,6 +43,7 @@ class SIPHandler(socketserver.DatagramRequestHandler):
             pass
 
     def sent_to(self, data, user_dst, port='', ip='127.0.0.1'):
+        """Con self.send_to enviaremos para 200 not bad."""
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
             if port == '':
                 port = self.reg[user_dst]['server_port']
@@ -45,6 +52,7 @@ class SIPHandler(socketserver.DatagramRequestHandler):
             log.sent_to(ip + ':' + port, data)
 
     def receive(self, data, user_dst, ip='127.0.0.1'):
+        """Con self.recive entraran los bye y los invite de clientes."""
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
             port = self.reg[user_dst]['server_port']
             my_socket.connect((ip, int(port)))
@@ -57,8 +65,10 @@ class SIPHandler(socketserver.DatagramRequestHandler):
 
             return reply
 
-    def handle(self):
 
+    def handle(self):
+        """Handler donde recibe y envia proxy_registrar."""
+        #cargamos contraseñas y usuarios del passwords.json
         try:
             with open(tags['database_path'], 'r') as jsonfile:
                 self.reg = json.load(jsonfile)

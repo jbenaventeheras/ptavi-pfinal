@@ -1,3 +1,7 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+"""Clase XMLHandler y principal para funciones de server y para logear."""
+import os
 import os
 import sys
 import time
@@ -29,6 +33,8 @@ sip_mess = {'100': 'SIP/2.0 100 Trying\r\n\r\n',
 
 
 def get_digest(nonce, passwd, encoding='utf-8'):
+    """saca hexadecimales de cliente y password."""
+    import os
     digest = md5()
     digest.update(bytes(nonce, encoding))
     digest.update(bytes(passwd, encoding))
@@ -36,36 +42,43 @@ def get_digest(nonce, passwd, encoding='utf-8'):
 
     return digest.hexdigest()
 
-
 class XMLHandler(ContentHandler):
+    """Clase XMLHandler con atributos xml usados."""
 
     def __init__(self, att_list):
+        """inicia el xml con las att_list."""
         self.conf = {}
         self.att = att_list
 
     def startElement(self, name, attrs):
+        """introduce en el xml las att_list."""
         if name in self.att:
             for att in self.att[name]:
                 self.conf[name + "_" + att] = attrs.get(att, '')
 
     def get_tags(self):
+        """retorna los atrbutos."""
         return self.conf
 
 
 class LOGGIN:
+    """Funciones utilizadas en proxy server y client para logear."""
 
     def __init__(self, file_name):
+        """Inicializa desde el archivo .xml."""
         if not os.path.exists(file_name):
             os.system('touch ' + file_name)
         self.file = file_name
 
     def starting(self):
+        """Inicializa tiempo."""
         now = time.gmtime(time.time() + 3600)
         log = open(self.file, 'a')
         log.write(time.strftime((date_log), now) + ' Starting...\n')
         log.close()
 
     def error(self, message):
+        """Error en message."""
         now = time.gmtime(time.time() + 3600)
         error_message = ' Error: ' + message + '\n'
         log = open(self.file, 'a')
@@ -73,6 +86,7 @@ class LOGGIN:
         log.close()
 
     def sent_to(self, address, message):
+        """envia message a address."""
         line = ''
         for part in message.split('\r\n'):
             if part != '':
@@ -86,6 +100,7 @@ class LOGGIN:
         log.close()
 
     def received_from(self, address, message):
+        """recive mess."""
         line = ''
         for part in message.split('\r\n'):
             if part != '':
@@ -99,6 +114,7 @@ class LOGGIN:
         log.close()
 
     def finishing(self):
+        """finaliza time."""
         now = time.gmtime(time.time() + 3600)
         log = open(self.file, 'a')
         log.write(time.strftime((date_log), now) + ' Finishing\n')
@@ -106,9 +122,11 @@ class LOGGIN:
 
 
 class SHandler(socketserver.DatagramRequestHandler):
-    rtp = []
+    """HANDLER DEL SERVER."""
 
+    rtp = []
     def send_proxy(self, data):
+        """Envio del server al proxy."""
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
             ip = tags['regproxy_ip']
             port = tags['regproxy_puerto']
@@ -117,6 +135,7 @@ class SHandler(socketserver.DatagramRequestHandler):
             log.sent_to(ip + ':' + port, data)
 
     def handle(self):
+        """Handler server donde recibe INVITE BYE ACK."""
         data = self.rfile.read().decode('utf-8')
         address = self.client_address[0] + ':' + str(self.client_address[1])
         log.received_from(address, data)
