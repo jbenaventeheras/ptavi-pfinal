@@ -12,6 +12,7 @@ if len(sys.argv) != 4:
 else:
     if os.path.exists(sys.argv[3]):
         audio_file = sys.argv[3]
+        
     else:
         sys.exit('File not found')
     SERVER = sys.argv[1]
