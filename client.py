@@ -24,8 +24,8 @@ else:
 class XMLHandlerClient(ContentHandler):
 
     def __init__(self):     # Declaramos las listas de los elementos
-        self.list_element = []
-        self.element = {
+        self.array_atributos = []
+        self.atributos = {
             'account': ['username', 'passwd'],
             'uaserver': ['ip', 'puerto'],
             'rtpaudio': ['puerto'],
@@ -33,19 +33,19 @@ class XMLHandlerClient(ContentHandler):
             'log': ['path'],
             'audio': ['path']}
 
-    def startElement(self, name, element):   # Signals the start of an element in non-namespace mode.
+    def startElement(self, name, atributos):   # Signals the start of an atributos in non-namespace mode.
         dicc = {}
-        if name in self.element:
-            for elment in self.element[name]:
-                dicc[elment] = element.get(elment, '')
-            self.list_element.append([name, dicc])
+        if name in self.atributos:
+            for att in self.atributos[name]:
+                dicc[att] = atributos.get(att, '')
+            self.array_atributos.append([name, dicc])
 
     def get_att(self):      # Devuelve la lista con elementos encontrados
-        return self.list_element
+        return self.array_atributos
 
 def ReadXmlClient(xml_config):
 
-
+    xml_config = sys.argv[1]
     try:
 
         parser = make_parser()
@@ -61,6 +61,21 @@ def ReadXmlClient(xml_config):
 
 if __name__ == "__main__":
 
-    xml_config = sys.argv[1]
     client_tags = ReadXmlClient(xml_config)
-    print(client_tags)
+    username = client_tags[0][1]
+
+    passwd = client_tags[0][1]['passwd']
+    uaserv_ip = client_tags[1][1]['ip']
+    uaserv_port = str(client_tags[1][1]['puerto'])
+    audio_port = (client_tags[2][1]['puerto'])
+    SERVER_Proxy = client_tags[3][1]['ip']
+    PORT_Proxy = int(client_tags[3][1]['puerto'])
+    file_log = client_tags[4][1]['path']
+    audio = client_tags[5][1]['path']
+
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
+        my_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        my_socket.connect((SERVER_Proxy, PORT_Proxy))
+        data = my_socket.recv(1024)
+        server_OK = data.decode('utf-8').split(' ')[-1]
+        print('RECIBIDO EN SOCKET MENSAJE: ' + data.decode('utf-8')
