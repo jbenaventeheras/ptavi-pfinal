@@ -15,11 +15,29 @@ from xml.sax import make_parser
 from datetime import datetime, date, time, timedelta
 
 if len(sys.argv) != 2:
-    sys.exit('usage error: python3 server.py <port> ')
-else:
-        PUERTO = int(sys.argv[1])
-        FORMAT = '%H:%M:%S %d-%m-%Y'
+    sys.exit('usage error: python3 proxy_registrar.py config')
 
+class XMLHandlerProxy(ContentHandler):
+
+    def __init__(self):     # Declaramos las listas de los elementos
+        self.array_atributos = []
+        self.atributos = {
+            'account': ['username', 'passwd'],
+            'uaserver': ['ip', 'puerto'],
+            'rtpaudio': ['puerto'],
+            'regproxy': ['ip', 'puerto'],
+            'log': ['path'],
+            'audio': ['path']}
+
+    def startElement(self, name, atributos):   # Signals the start of an atributos in non-namespace mode.
+        dicc = {}
+        if name in self.atributos:
+            for att in self.atributos[name]:
+                dicc[att] = atributos.get(att, '')
+            self.array_atributos.append([name, dicc])
+
+    def get_att(self):      # Devuelve la lista con elementos encontrados
+        return self.array_atributos
 
 class SIPRegisterHandler(socketserver.DatagramRequestHandler):
     """Echo server class."""
@@ -28,7 +46,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 
     def register2json(self):
         """JSON."""
-        json.dump(self.final_dicc, open('registered.json', 'w'), indent=3)
+        json.dump(self.final_dicc, open('passwords.json', 'w'), indent=3)
 
     def json2register(self):
         """Get a json file and turns it into a dictionary file."""
