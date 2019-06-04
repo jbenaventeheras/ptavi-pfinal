@@ -23,7 +23,7 @@ class XMLHandlerProxy(ContentHandler):
         self.array_atributos = []
         self.atributos = {
             'server': ['name', 'ip', 'puerto'],
-            'database': ['pathusers', 'pathpassw'],
+            'database': ['path', 'pathpassw'],
             'log': ['path']}
 
     def startElement(self, name, atributos):   # Signals the start of an atributos in non-namespace mode.
@@ -73,6 +73,8 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
     """Echo server class."""
 
     passw_dicc = {}
+    print(passw_dicc)
+
 
     def register2json(self):
         """JSON."""
@@ -89,6 +91,13 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
     def handle(self):
         """handle."""
 
+        while 1:
+            # Leyendo línea a línea lo que nos envía el cliente
+            line = self.rfile.read()
+            if len(line) == 0:
+                break
+            receive_array = line.decode('utf-8').split()
+            print(receive_array)
 
 
 if __name__ == "__main__":
@@ -97,10 +106,17 @@ if __name__ == "__main__":
     proxy_tags = ReadXmlProxy(proxy_config)
     print(proxy_tags)
     proxy_name = proxy_tags[0][1]['name']
+    print(proxy_name)
     proxy_ip = proxy_tags[0][1]['ip']
     proxy_port = int(proxy_tags[0][1]['puerto'])
-    database_path = proxy_tags[2][1]['path']
+    client_register = proxy_tags[1][1]['path']
+    client_passwords= proxy_tags[2][1]['path']
 
-
+    serv = socketserver.UDPServer((proxy_ip, proxy_port), SIPRegisterHandler)
+    try:
+        serv.serve_forever()
+    except KeyboardInterrupt:
+        log_proxy.finish()
+        print('servidor finalizado')
 
     print("Lanzando servidor UDP de eco...")

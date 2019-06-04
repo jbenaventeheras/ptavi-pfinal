@@ -114,7 +114,7 @@ if __name__ == "__main__":
                         my_socket.send(bytes(send_mess, 'utf-8') + b'\r\n')
                         Loggin.sent_to(uaserv_ip, uaserv_port, send_mess)
                         print('hola')
-                    if str.upper(method) == 'REGISTER':
+                    if str.upper(method) == 'INVITE':
                         send_mess = method + ' sip:' + option + ' SIP/2.0\r\n'
                         send_mess += 'Content-Type: application/sdp\r\n\r\n'
                         send_mess += 'v=0\r\n' + 'o=' + username + ' ' + uaserv_ip + '\r\n'
