@@ -13,7 +13,7 @@ from xml.sax.handler import ContentHandler
 if len(sys.argv) != 4:
         sys.exit('Usage :python3 uaclient.py config method option')
 
-
+methods_client = 'REGISTER, INVITE, BYE, ACK'
 
 class XMLHandlerClient(ContentHandler):
 
@@ -68,42 +68,76 @@ class Client_Log:
         log_write.write(mensaje_inicio)
         log_write.close()
 
+    def ConnectionRefused_log(self):
+        log_write = open(self.file, 'a')
+        log_write.write('Error: No server listening at '+ SERVER_Proxy+ 'port ' + str(PORT_Proxy))
+        log_write.close()
+
+    def sent_to(self, ip, port, send_mess):
+        Hora_inicio = time.strftime("%Y%m%d%H%M%S ", time.gmtime(time.time()))
+        mess = Hora_inicio + ' Send to ' + ip + ':' + str(port) + ': '
+        mess += send_mess.replace('\r\n', ' ') + '\r\n'
+        log_write = open(self.file, 'a')
+        log_write.write(mess)
+        log_write.close()
 
 
 if __name__ == "__main__":
 
-    try:
-            xml_config = sys.argv[1]
-            client_tags = ReadXmlClient(xml_config)
-            username = client_tags[0][1]
+    option = sys.argv[3]
+    method = (sys.argv[2])
+    if str.upper(method) in methods_client:
+        print(method)
 
-            passwd = client_tags[0][1]['passwd']
-            uaserv_ip = client_tags[1][1]['ip']
-            uaserv_port = str(client_tags[1][1]['puerto'])
-            audio_port = (client_tags[2][1]['puerto'])
-            SERVER_Proxy = client_tags[3][1]['ip']
-            PORT_Proxy = int(client_tags[3][1]['puerto'])
-            file_log = client_tags[4][1]['path']
-            audio = client_tags[5][1]['path']
-            Loggin = Client_Log(file_log)
-            Loggin.Begin_client()
+        try:
+                xml_config = sys.argv[1]
+                client_tags = ReadXmlClient(xml_config)
+                username = client_tags[0][1]['username']
+                passwd = client_tags[0][1]['passwd']
+                uaserv_ip = client_tags[1][1]['ip']
+                uaserv_port = str(client_tags[1][1]['puerto'])
+                audio_port = (client_tags[2][1]['puerto'])
+                SERVER_Proxy = client_tags[3][1]['ip']
+                PORT_Proxy = int(client_tags[3][1]['puerto'])
+                file_log = client_tags[4][1]['path']
+                audio = client_tags[5][1]['path']
 
-
-            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
-                my_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-                my_socket.connect((SERVER_Proxy, PORT_Proxy))
-
-                print('RECIBIDO EN SOCKET MENSAJE:')
-
-    except IndexError:
-        print('SIP/2.0 404 User Not Found\r\n\r\n')
-        sys.exit()
+                Loggin = Client_Log(file_log)
+                Loggin.Begin_client()
 
 
-    except ConnectionRefusedError:
-        print("No server listening at " + SERVER_Proxy + ' port ' + str(PORT_proxy))
-        sys.exit()
+                with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
+                    my_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+                    my_socket.connect((SERVER_Proxy, PORT_Proxy))
+                    if str.upper(method) == 'REGISTER':
+                        send_mess = method + ' sip:' + username + ':' + uaserv_port + ' SIP/2.0\r\n' + 'Expires:' + option + '\r\n\r\n'
+                        my_socket.send(bytes(send_mess, 'utf-8') + b'\r\n')
+                        Loggin.sent_to(uaserv_ip, uaserv_port, send_mess)
+                        print('hola')
+                    if str.upper(method) == 'REGISTER':
+                        send_mess = method + ' sip:' + option + ' SIP/2.0\r\n'
+                        send_mess += 'Content-Type: application/sdp\r\n\r\n'
+                        send_mess += 'v=0\r\n' + 'o=' + username + ' ' + uaserv_ip + '\r\n'
+                        send_mess += 's=sesion\r\n' + 't=0\r\n'
+                        send_mess += 'm=audio ' + audio_port + ' RTP\r\n\r\n'
+                        my_socket.send(bytes(send_mess, 'utf-8') + b'\r\n')
+                        Loggin.sent_to(uaserv_ip, uaserv_port, send_mess)
+                    if str.upper(method) == 'BYE':
+                        send_mess = METHOD + ' sip:' + OPTION + ' SIP/2.0\r\n\r\n'
+                        my_socket.send(bytes(send_mess, 'utf-8') + b'\r\n')
+                        Loggin.sent_to(self, uaserv_ip, uaserv_port, send_mess)
 
-    except KeyboardInterrupt:
-        print("client finsh")
-        sys.exit()
+                try:
+                    data = my_socket.recv(1024).decode('utf-8')
+                except:
+                    Loggin.ConnectionRefused_log()
+                    sys.exit('Error: No server listening at '+ SERVER_Proxy+ ' port ' + str(PORT_Proxy))
+
+        except ConnectionRefusedError:
+            Loggin.ConnectionRefused_log()
+            sys.exit('Error: No server listening at '+ SERVER_Proxy+ ' port ' + str(PORT_Proxy))
+        except KeyboardInterrupt:
+            print("client finsh")
+            sys.exit()
+    else:
+        sys.exit('method not allowed')
