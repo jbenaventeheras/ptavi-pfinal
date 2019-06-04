@@ -10,8 +10,8 @@ import time
 import random
 import hashlib
 import socketserver
-import socket as skt
 from xml.sax import make_parser
+from xml.sax.handler import ContentHandler
 from datetime import datetime, date, time, timedelta
 
 if len(sys.argv) != 2:
@@ -22,12 +22,9 @@ class XMLHandlerProxy(ContentHandler):
     def __init__(self):     # Declaramos las listas de los elementos
         self.array_atributos = []
         self.atributos = {
-            'account': ['username', 'passwd'],
-            'uaserver': ['ip', 'puerto'],
-            'rtpaudio': ['puerto'],
-            'regproxy': ['ip', 'puerto'],
-            'log': ['path'],
-            'audio': ['path']}
+            'server': ['name', 'ip', 'puerto'],
+            'database': ['pathusers', 'pathpassw'],
+            'log': ['path']}
 
     def startElement(self, name, atributos):   # Signals the start of an atributos in non-namespace mode.
         dicc = {}
@@ -39,75 +36,71 @@ class XMLHandlerProxy(ContentHandler):
     def get_att(self):      # Devuelve la lista con elementos encontrados
         return self.array_atributos
 
+def ReadXmlProxy(proxy_config):
+
+    try:
+        parser = make_parser()
+        Handler = XMLHandlerProxy()
+        parser.setContentHandler(Handler)
+        parser.parse(open(proxy_config))
+        configtags = Handler.get_att()
+
+    except FileNotFoundError:
+        sys.exit('fichero XML no encontrado')
+
+    return configtags
+
+class Proxy_Log:
+
+    def __init__(self, file_log):
+
+        if not os.path.exists(file_log):
+            os.system('touch ' + file_log)
+        self.file = file_log
+
+
+    def sent_to(self, ip, port, send_mess):
+        Hora_inicio = time.strftime("%Y%m%d%H%M%S ", time.gmtime(time.time()))
+        mess = Hora_inicio + ' Send to ' + ip + ':' + str(port) + ': '
+        mess += send_mess.replace('\r\n', ' ') + '\r\n'
+        log_write = open(self.file, 'a')
+        log_write.write(mess)
+        log_write.close()
+
+
+
 class SIPRegisterHandler(socketserver.DatagramRequestHandler):
     """Echo server class."""
 
-    final_dicc = {}
+    passw_dicc = {}
 
     def register2json(self):
         """JSON."""
-        json.dump(self.final_dicc, open('passwords.json', 'w'), indent=3)
+        json.dump(self.passw_dicc, open('passwords.json', 'w'), indent=3)
 
     def json2register(self):
         """Get a json file and turns it into a dictionary file."""
         try:
             with open('registered.json', 'r') as file:
-                self.final_dicc = json.load(file)
+                self.passw_dicc = json.load(file)
         except (FileNotFoundError, ValueError, json.decoder.JSONDecodeError):
             pass
 
     def handle(self):
         """handle."""
-        self.json2register()
-        dicc = {'address': '', 'expires': ''}
-        list = []
-        IP = self.client_address[0]
-        PUERTO = self.client_address[1]
 
-        for line in self.rfile:
-            list.append(line.decode('utf-8'))
-        message = list[0].split(' ')
-        expires = list[1].split(' ')
-        expires_user = expires[1].split('\r\n')[0]
-
-        if message[0] == 'REGISTER':
-            self.wfile.write(b"SIP/2.0 200 OK\r\n\r\n")
-            user = message[1].split(':')[1]
-            dicc['address'] = IP + ' ' + user
-            expires_date = datetime.now()+timedelta(seconds=int(expires_user))
-            dicc['expires'] = expires_date.strftime(FORMAT)
-
-        if int(expires_user) == 0:
-
-            try:
-                del self.final_dicc[user]
-                self.wfile.write(b'SIP/2.0 200 OK\r\n\r\n')
-            except KeyError:
-
-                pass
-
-        else:
-
-            self.final_dicc[user] = dicc
-            self.wfile.write(b'SIP/2.0 200 OK\r\n\r\n')
-            Now = datetime.now().strftime(FORMAT)
-            user_del = []
-
-            for user in self.final_dicc:
-                if Now >= self.final_dicc[user]['expires']:
-                    user_del.append(user)
-            for user in user_del:
-                del self.final_dicc[user]
-        self.register2json()
 
 
 if __name__ == "__main__":
-    # Listens at localhost ('') port 6001
-    # and calls the EchoHandler class to manage the request
-    serv = socketserver.UDPServer(('', PUERTO), SIPRegisterHandler)
+
+    proxy_config = sys.argv[1]
+    proxy_tags = ReadXmlProxy(proxy_config)
+    print(proxy_tags)
+    proxy_name = proxy_tags[0][1]['name']
+    proxy_ip = proxy_tags[0][1]['ip']
+    proxy_port = int(proxy_tags[0][1]['puerto'])
+    database_path = proxy_tags[2][1]['path']
+
+
 
     print("Lanzando servidor UDP de eco...")
-    try:
-        serv.serve_forever()
-    except KeyboardInterrupt:
-        print("Finalizado servidor")
