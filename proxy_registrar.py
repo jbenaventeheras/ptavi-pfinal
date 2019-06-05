@@ -50,6 +50,7 @@ def ReadXmlProxy(proxy_config):
 
     return configtags
 
+
 class Proxy_Log:
 
     def __init__(self, file_log):
@@ -70,37 +71,31 @@ class Proxy_Log:
 
 
 class SIPRegisterHandler(socketserver.DatagramRequestHandler):
-    """Echo server class."""
-
-    passw_dicc = {}
-    print(passw_dicc)
-
-
+    dicc = {}
     def register2json(self):
-        """JSON."""
-        json.dump(self.passw_dicc, open('passwords.json', 'w'), indent=3)
-
-    def json2register(self):
-        """Get a json file and turns it into a dictionary file."""
+        """intamos abris j.son si no existe creamos en excep"""
         try:
-            with open('registered.json', 'r') as file:
-                self.passw_dicc = json.load(file)
-        except (FileNotFoundError, ValueError, json.decoder.JSONDecodeError):
-            pass
+            with open('registered.json', 'r') as json_file:
+                self.dicc = json.load(json_file)
+        except:
+            with open('registered.json', 'w') as json_file:
+                json.dump(self.dicc, json_file, indent=2)
 
     def handle(self):
         """handle."""
-
+        self.register2json()
         while 1:
             # Leyendo línea a línea lo que nos envía el cliente
             line = self.rfile.read()
             if len(line) == 0:
                 break
             receive_array = line.decode('utf-8').split()
-            print(receive_array)
+            if 'REGISTER' in receive_array:
+                print(receive_array)
 
 
 if __name__ == "__main__":
+
 
     proxy_config = sys.argv[1]
     proxy_tags = ReadXmlProxy(proxy_config)
@@ -110,13 +105,13 @@ if __name__ == "__main__":
     proxy_ip = proxy_tags[0][1]['ip']
     proxy_port = int(proxy_tags[0][1]['puerto'])
     client_register = proxy_tags[1][1]['path']
-    client_passwords= proxy_tags[2][1]['path']
+    client_passwords= proxy_tags[1][1]['pathpassw']
+    print(client_passwords)
 
     serv = socketserver.UDPServer((proxy_ip, proxy_port), SIPRegisterHandler)
     try:
         serv.serve_forever()
     except KeyboardInterrupt:
-        log_proxy.finish()
         print('servidor finalizado')
 
     print("Lanzando servidor UDP de eco...")
