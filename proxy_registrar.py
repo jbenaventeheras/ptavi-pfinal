@@ -12,7 +12,7 @@ import hashlib
 import socketserver
 from xml.sax import make_parser
 from xml.sax.handler import ContentHandler
-from datetime import datetime, date, time, timedelta
+from datetime import datetime, date, timedelta
 
 if len(sys.argv) != 2:
     sys.exit('usage error: python3 proxy_registrar.py config')
@@ -36,6 +36,8 @@ class XMLHandlerProxy(ContentHandler):
     def get_att(self):      # Devuelve la lista con elementos encontrados
         return self.array_atributos
 
+
+
 def ReadXmlProxy(proxy_config):
 
     try:
@@ -50,6 +52,11 @@ def ReadXmlProxy(proxy_config):
 
     return configtags
 
+def time_now():
+
+    #return time.strftime("%Y%m%d%H%M%S ", time.gmtime(time.time()))
+    return time.time()
+
 
 class Proxy_Log:
 
@@ -58,6 +65,11 @@ class Proxy_Log:
         if not os.path.exists(file_log):
             os.system('touch ' + file_log)
         self.file = file_log
+        Hora_inicio = time.strftime("%Y%m%d%H%M%S ", time.gmtime(time.time()))
+        mensaje_inicio = Hora_inicio + ' Starting proxy_server...\n'
+        log_write = open(self.file, 'a')
+        log_write.write(mensaje_inicio)
+        log_write.close()
 
 
     def sent_to(self, ip, port, send_mess):
@@ -68,6 +80,13 @@ class Proxy_Log:
         log_write.write(mess)
         log_write.close()
 
+    def receive(self, ip, port, send_mess):
+        Hora_inicio = time.strftime("%Y%m%d%H%M%S ", time.gmtime(time.time()))
+        mess = Hora_inicio + ' recived from' + ip + ':' + str(port) + ': '
+        mess += send_mess
+        log_write = open(self.file, 'a')
+        log_write.write(mess)
+        log_write.close()
 
 
 class SIPRegisterHandler(socketserver.DatagramRequestHandler):
@@ -81,9 +100,23 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
             with open('registered.json', 'w') as json_file:
                 json.dump(self.dicc, json_file, indent=2)
 
+
+    def ReadPasswords(self):
+        Passw_array = []
+        with open('passwords.txt', 'r') as passwords_file:
+            for line in passwords_file:
+                Passw_array += line.split()
+
+            return Passw_array
+
     def handle(self):
         """handle."""
+
         self.register2json()
+        Passw_array = self.ReadPasswords()
+        nonce = str(random.randint(00000000, 99999999))
+
+
         while 1:
             # Leyendo línea a línea lo que nos envía el cliente
             line = self.rfile.read()
@@ -91,7 +124,19 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                 break
             receive_array = line.decode('utf-8').split()
             if 'REGISTER' in receive_array:
-                print(receive_array)
+                username =  receive_array[1].split(':')[1]
+                user_port = receive_array[1].split(':')[2]
+                expires = float(receive_array[3].split(':')[1]) + time_now()
+                print(line)
+                ip = self.client_address[0]
+                Loggin.receive(ip, user_port, str(line))
+                if user in self.dicc:
+        
+                else:
+                    if len(receive) == 4:
+
+                    elif len(receive) == 9:
+
 
 
 if __name__ == "__main__":
@@ -106,6 +151,8 @@ if __name__ == "__main__":
     proxy_port = int(proxy_tags[0][1]['puerto'])
     client_register = proxy_tags[1][1]['path']
     client_passwords= proxy_tags[1][1]['pathpassw']
+    file_log = proxy_tags[2][1]['path']
+    Loggin = Proxy_Log(file_log)
     print(client_passwords)
 
     serv = socketserver.UDPServer((proxy_ip, proxy_port), SIPRegisterHandler)
