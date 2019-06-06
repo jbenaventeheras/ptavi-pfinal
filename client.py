@@ -127,36 +127,35 @@ if __name__ == "__main__":
                         my_socket.send(bytes(send_mess, 'utf-8') + b'\r\n')
                         Loggin.sent_to(self, uaserv_ip, uaserv_port, send_mess)
 
-                try:
-                    data = my_socket.recv(1024).decode('utf-8')
-                except:
-                    Loggin.ConnectionRefused_log()
-                    sys.exit('Error: No server listening at '+ SERVER_Proxy+ ' port ' + str(PORT_Proxy))
 
-                if '401' in data:
-                    print('Envio autorizacion: ' + LINE)
-                    print(data.decode('utf-8'))
-                if '100' in data:
-                    aud_port_emisor = receive[-2]
-                    LINE = 'ACK' + ' sip:' + OPTION + ' SIP/2.0\r\n\r\n'
-                    my_socket.send(bytes(LINE, 'utf-8') + b'\r\n')
-                    log.sent_to(proxy_ip, proxy_port, LINE)
-                    data = my_socket.recv(1024)
-                    print('Envio ack: ' + LINE)
-                    print(data.decode('utf-8'))
-                    cvlc = 'cvlc rtp://@' + uaserv_ip + ':' + aud_port_emisor
-                    log.ejecutando(cvlc)
-                    print('Ejecutando... ', cvlc)
-                    os.system(cvlc)
-                    RTP = './mp32rtp -i ' + uaserv_ip + ' -p '
-                    RTP += aud_port_emisor + " < " + audio
-                    log.ejecutando(RTP)
-                    print('Ejecutando... ', RTP)
-                    os.system(RTP)
-                if '200' in data:
-                    print('ok received')
-                if '400' in data:
-                    print('bad request received')
+                    data = my_socket.recv(1024).decode('utf-8')
+                    print(data)
+
+                    if '401' in data:
+                        send_mess = method + ' sip:' + username + ':' + uaserv_port + ' SIP/2.0\r\n' + 'Expires:' + option + '\r\n\r\n' + 'passwd'
+                        my_socket.send(bytes(send_mess, 'utf-8') + b'\r\n')
+                        Loggin.sent_to(uaserv_ip, uaserv_port, send_mess)
+                    if '100' in data:
+                        aud_port_emisor = receive[-2]
+                        LINE = 'ACK' + ' sip:' + OPTION + ' SIP/2.0\r\n\r\n'
+                        my_socket.send(bytes(LINE, 'utf-8') + b'\r\n')
+                        log.sent_to(proxy_ip, proxy_port, LINE)
+                        data = my_socket.recv(1024)
+                        print('Envio ack: ' + LINE)
+                        print(data.decode('utf-8'))
+                        cvlc = 'cvlc rtp://@' + uaserv_ip + ':' + aud_port_emisor
+                        log.ejecutando(cvlc)
+                        print('Ejecutando... ', cvlc)
+                        os.system(cvlc)
+                        RTP = './mp32rtp -i ' + uaserv_ip + ' -p '
+                        RTP += aud_port_emisor + " < " + audio
+                        log.ejecutando(RTP)
+                        print('Ejecutando... ', RTP)
+                        os.system(RTP)
+                    if '200' in data:
+                        print('ok received')
+                    if '400' in data:
+                        print('bad request received')
 
         except ConnectionRefusedError:
             Loggin.ConnectionRefused_log()

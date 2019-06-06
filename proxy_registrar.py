@@ -37,7 +37,6 @@ class XMLHandlerProxy(ContentHandler):
         return self.array_atributos
 
 
-
 def ReadXmlProxy(proxy_config):
 
     try:
@@ -105,7 +104,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
         Passw_array = []
         with open('passwords.txt', 'r') as passwords_file:
             for line in passwords_file:
-                Passw_array += line.split()
+                Passw_array += line.split()[0]
 
             return Passw_array
 
@@ -114,7 +113,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 
         self.register2json()
         Passw_array = self.ReadPasswords()
-        nonce = str(random.randint(00000000, 99999999))
+        print(Passw_array)
 
 
         while 1:
@@ -122,20 +121,41 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
             line = self.rfile.read()
             if len(line) == 0:
                 break
+
             receive_array = line.decode('utf-8').split()
+
+            if 'INVITE' in receive_array:
+                print(receive_array)
+
             if 'REGISTER' in receive_array:
                 username =  receive_array[1].split(':')[1]
-                user_port = receive_array[1].split(':')[2]
-                expires = float(receive_array[3].split(':')[1]) + time_now()
+                user_rtp_port = receive_array[1].split(':')[2]
+                expires = float(receive_array[3].split(':')[1])
+                expired = float(receive_array[3].split(':')[1]) + time_now()
                 print(line)
                 ip = self.client_address[0]
-                Loggin.receive(ip, user_port, str(line))
-                if user in self.dicc:
-        
+                Loggin.receive(ip, user_rtp_port, str(line))
+                if username in self.dicc:
+                        self.dicc[username] = ('Ip:' + ip + user_rtp_port + ' Registered: ' + str(expired) + str(expires))
+                        mess ='SIP/2.0 200 OK\r\n\r\n'
+                        self.wfile.write(bytes(mess, 'utf-8'))
+                        print('user ' + username + ' log in')
+                        if expires == 0:
+                            del self.dicc[username]
                 else:
-                    if len(receive) == 4:
+                    print(receive_array)
+                    if 4  == len(receive_array):
+                        mess =' SIP/2.0 401 Unauthorized WWW-Authenticate: Digest nonce='
+                        self.wfile.write(bytes(mess, 'utf-8'))
+                    else:
+                        if 5  == len(receive_array):
+                            print(receive_array)
+                            self.dicc[username] = ('Ip:' + ip + user_rtp_port + ' Registered: ' + str(expired) + str(expires))
 
-                    elif len(receive) == 9:
+
+
+            with open('registered.json', 'w') as json_file:
+                json.dump(self.dicc, json_file, indent=2)
 
 
 
