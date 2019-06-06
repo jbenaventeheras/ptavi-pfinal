@@ -115,7 +115,7 @@ if __name__ == "__main__":
                         Loggin.sent_to(uaserv_ip, uaserv_port, send_mess)
                         print('hola')
                     if str.upper(method) == 'INVITE':
-                        send_mess = method + ' sip:' + option + ' SIP/2.0\r\n'
+                        send_mess = method +' ' + option + ' SIP/2.0\r\n'
                         send_mess += 'Content-Type: application/sdp\r\n\r\n'
                         send_mess += 'v=0\r\n' + 'o=' + username + ' ' + uaserv_ip + '\r\n'
                         send_mess += 's=sesion\r\n' + 't=0\r\n'
@@ -130,6 +130,7 @@ if __name__ == "__main__":
 
                     data = my_socket.recv(1024).decode('utf-8')
                     print(data)
+                    
 
                     if '401' in data:
                         send_mess = method + ' sip:' + username + ':' + uaserv_port + ' SIP/2.0\r\n' + 'Expires:' + option + '\r\n\r\n' + 'passwd'
@@ -137,7 +138,7 @@ if __name__ == "__main__":
                         Loggin.sent_to(uaserv_ip, uaserv_port, send_mess)
                     if '100' in data:
                         aud_port_emisor = receive[-2]
-                        LINE = 'ACK' + ' sip:' + OPTION + ' SIP/2.0\r\n\r\n'
+                        LINE = 'ACK' + ' sip:' + option + ' SIP/2.0\r\n\r\n'
                         my_socket.send(bytes(LINE, 'utf-8') + b'\r\n')
                         log.sent_to(proxy_ip, proxy_port, LINE)
                         data = my_socket.recv(1024)

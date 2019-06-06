@@ -17,7 +17,7 @@ from datetime import datetime, date, timedelta
 if len(sys.argv) != 2:
     sys.exit('usage error: python3 proxy_registrar.py config')
 
-class XMLHandlerProxy(ContentHandler):
+class XMLHandlerServer(ContentHandler):
 
     def __init__(self):     # Declaramos las listas de los elementos
         self.array_atributos = []

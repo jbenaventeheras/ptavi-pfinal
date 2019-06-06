@@ -90,6 +90,7 @@ class Proxy_Log:
 
 class SIPRegisterHandler(socketserver.DatagramRequestHandler):
     dicc = {}
+    Passw_array = {}
     def register2json(self):
         """intamos abris j.son si no existe creamos en excep"""
         try:
@@ -101,19 +102,21 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 
 
     def ReadPasswords(self):
-        Passw_array = []
+
         with open('passwords.txt', 'r') as passwords_file:
             for line in passwords_file:
-                Passw_array += line.split()[0]
+                user = (line.split()[0])
+                password = str(line.split()[1])
 
-            return Passw_array
+                self.Passw_array[user] = (password)
+
 
     def handle(self):
         """handle."""
 
         self.register2json()
-        Passw_array = self.ReadPasswords()
-        print(Passw_array)
+        self.ReadPasswords()
+        print(self.Passw_array)
 
 
         while 1:
@@ -123,16 +126,39 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                 break
 
             receive_array = line.decode('utf-8').split()
-
+            print(receive_array)
             if 'INVITE' in receive_array:
-                print(receive_array)
+                username_dest =  receive_array[1].split(':')[1]
+                username = receive_array[6].split('=')[1]
+                print(username_dest)
+                print(username)
+
+                print(receive_array[1])
+                if username_dest in self.dicc:
+                    print('hola')
+                    print(username_dest)
+                    dest_ip = self.dicc.get(username_dest).split()[0]
+                    dest_ip = dst_ip.split(':')[1].split()[0]
+                    dest_port = self.dicc.get(username_dest).split()[1]
+                    print(dst_ip)
+                    print(dst_port)
+                    try:
+                        with skt.socket(skt.AF_INET, skt.SOCK_DGRAM) as sck:
+                            sck.connect((dest_ip, int(dest_port)))
+                            sck.send(bytes(line, 'utf-8'))
+                            data = sck.recv(1024)
+                            line = data.decode("utf-8")
+                            if '180' in receive_array:
+                                self.wfile.write(bytes(str(line), 'utf-8'))
+                    except:
+                        print('user not found')
+
 
             if 'REGISTER' in receive_array:
                 username =  receive_array[1].split(':')[1]
                 user_rtp_port = receive_array[1].split(':')[2]
                 expires = float(receive_array[3].split(':')[1])
                 expired = float(receive_array[3].split(':')[1]) + time_now()
-                print(line)
                 ip = self.client_address[0]
                 Loggin.receive(ip, user_rtp_port, str(line))
                 if username in self.dicc:
@@ -143,15 +169,15 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                         if expires == 0:
                             del self.dicc[username]
                 else:
-                    print(receive_array)
                     if 4  == len(receive_array):
                         mess =' SIP/2.0 401 Unauthorized WWW-Authenticate: Digest nonce='
                         self.wfile.write(bytes(mess, 'utf-8'))
                     else:
                         if 5  == len(receive_array):
                             print(receive_array)
-                            self.dicc[username] = ('Ip:' + ip + user_rtp_port + ' Registered: ' + str(expired) + str(expires))
-
+                            if username in self.Passw_array:
+                                print('555555')
+                                self.dicc[username] = ('Ip:' + ip + ' ' + user_rtp_port + ' Registered: ' + str(expired) + str(expires))
 
 
             with open('registered.json', 'w') as json_file:
