@@ -10,6 +10,9 @@ import time
 import random
 import hashlib
 import socketserver
+import socket
+
+from hashlib import md5
 from xml.sax import make_parser
 from xml.sax.handler import ContentHandler
 from datetime import datetime, date, timedelta
@@ -56,6 +59,13 @@ def time_now():
     #return time.strftime("%Y%m%d%H%M%S ", time.gmtime(time.time()))
     return time.time()
 
+def EncryptPass(nonce, passwd, encoding='utf-8'):
+
+    Encrypt_Password = hashlib.md5()
+    Encrypt_Password.update(bytes(nonce, encoding))
+    Encrypt_Password.update(bytes(passwd, encoding))
+    Encrypt_Password.digest()
+    return Encrypt_Password.hexdigest()
 
 class Proxy_Log:
 
@@ -90,7 +100,7 @@ class Proxy_Log:
 
 class SIPRegisterHandler(socketserver.DatagramRequestHandler):
     dicc = {}
-    Passw_array = {}
+    Passw_dicc = {}
     def register2json(self):
         """intamos abris j.son si no existe creamos en excep"""
         try:
@@ -108,7 +118,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                 user = (line.split()[0])
                 password = str(line.split()[1])
 
-                self.Passw_array[user] = (password)
+                self.Passw_dicc[user] = (password)
 
 
     def handle(self):
@@ -116,7 +126,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 
         self.register2json()
         self.ReadPasswords()
-        print(self.Passw_array)
+        print(self.Passw_dicc)
 
 
         while 1:
@@ -143,9 +153,9 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                     print(dst_ip)
                     print(dst_port)
                     try:
-                        with skt.socket(skt.AF_INET, skt.SOCK_DGRAM) as sck:
-                            sck.connect((dest_ip, int(dest_port)))
-                            sck.send(bytes(line, 'utf-8'))
+                        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
+                            my_socket.connect((dest_ip, int(dest_port)))
+                            my_socket.send(bytes(line, 'utf-8'))
                             data = sck.recv(1024)
                             line = data.decode("utf-8")
                             if '180' in receive_array:
@@ -170,12 +180,17 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                             del self.dicc[username]
                 else:
                     if 4  == len(receive_array):
-                        mess =' SIP/2.0 401 Unauthorized WWW-Authenticate: Digest nonce='
+                        passwd = self.Passw_dicc[username]
+                        print(passwd)
+                        Encr_Pass = EncryptPass(username, passwd)
+                        print(Encr_Pass)
+                        mess ='SIP/2.0 401 Unauthorized WWW-Authenticate: Digest nonce= ' + Encr_Pass
+
                         self.wfile.write(bytes(mess, 'utf-8'))
                     else:
                         if 5  == len(receive_array):
                             print(receive_array)
-                            if username in self.Passw_array:
+                            if username in self.Passw_dicc:
                                 print('555555')
                                 self.dicc[username] = ('Ip:' + ip + ' ' + user_rtp_port + ' Registered: ' + str(expired) + str(expires))
 
