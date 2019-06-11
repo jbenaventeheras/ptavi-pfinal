@@ -3,10 +3,12 @@
 """Programa cliente que abre un socket a un servidor."""
 import socket
 import socketserver
-
 import sys
 import os
 import time
+import hashlib
+
+from hashlib import md5
 from xml.sax import make_parser
 from xml.sax.handler import ContentHandler
 
@@ -51,6 +53,13 @@ def ReadXmlClient(xml_config):
         sys.exit('fichero XML no encontrado')
 
     return configtags
+def EncryptPass(nonce, passwd, encoding='utf-8'):
+
+    Encrypt_Password = hashlib.md5()
+    Encrypt_Password.update(bytes(nonce, encoding))
+    Encrypt_Password.update(bytes(passwd, encoding))
+    Encrypt_Password.digest()
+    return Encrypt_Password.hexdigest()
 
 class Client_Log:
 
@@ -59,7 +68,6 @@ class Client_Log:
         if not os.path.exists(file_log):
             os.system('touch ' + file_log)
         self.file = file_log
-
 
     def Begin_client(self):
         Hora_inicio = time.strftime("%Y%m%d%H%M%S ", time.gmtime(time.time()))
@@ -129,11 +137,13 @@ if __name__ == "__main__":
 
 
                     data = my_socket.recv(1024).decode('utf-8')
-                    print(data)
-                    
+
+
 
                     if '401' in data:
-                        send_mess = method + ' sip:' + username + ':' + uaserv_port + ' SIP/2.0\r\n' + 'Expires:' + option + '\r\n\r\n' + 'passwd'
+                        RandomNum = data.split()[6]
+                        Encr_Pass = EncryptPass(RandomNum, passwd)
+                        send_mess = method + ' sip:' + username + ':' + uaserv_port + ' SIP/2.0\r\n' + 'Expires:' + option + '\r\n\r\n' + Encr_Pass
                         my_socket.send(bytes(send_mess, 'utf-8') + b'\r\n')
                         Loggin.sent_to(uaserv_ip, uaserv_port, send_mess)
                     if '100' in data:

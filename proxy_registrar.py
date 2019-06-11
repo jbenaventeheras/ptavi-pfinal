@@ -137,6 +137,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 
             receive_array = line.decode('utf-8').split()
             print(receive_array)
+
             if 'INVITE' in receive_array:
                 username_dest =  receive_array[1].split(':')[1]
                 username = receive_array[6].split('=')[1]
@@ -182,16 +183,19 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                     if 4  == len(receive_array):
                         passwd = self.Passw_dicc[username]
                         print(passwd)
-                        Encr_Pass = EncryptPass(username, passwd)
-                        print(Encr_Pass)
-                        mess ='SIP/2.0 401 Unauthorized WWW-Authenticate: Digest nonce= ' + Encr_Pass
 
+                        Encr_Pass = EncryptPass(RandomNum, passwd)
+                        mess ='SIP/2.0 401 Unauthorized WWW-Authenticate: Digest nonce= ' + RandomNum
                         self.wfile.write(bytes(mess, 'utf-8'))
                     else:
                         if 5  == len(receive_array):
                             print(receive_array)
-                            if username in self.Passw_dicc:
-                                print('555555')
+
+                            passwd = self.Passw_dicc[username]
+                            Encr_Pass = EncryptPass(RandomNum, passwd)
+                            print(Encr_Pass)
+                            if Encr_Pass == receive_array[4]:
+                                print('registrado usuario:' + username)
                                 self.dicc[username] = ('Ip:' + ip + ' ' + user_rtp_port + ' Registered: ' + str(expired) + str(expires))
 
 
@@ -215,6 +219,8 @@ if __name__ == "__main__":
     file_log = proxy_tags[2][1]['path']
     Loggin = Proxy_Log(file_log)
     print(client_passwords)
+    RandomNum = str(random.randint(00000000000, 99999999999))
+
 
     serv = socketserver.UDPServer((proxy_ip, proxy_port), SIPRegisterHandler)
     try:
