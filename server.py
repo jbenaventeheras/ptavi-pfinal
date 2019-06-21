@@ -12,8 +12,8 @@ from hashlib import md5
 from xml.sax import make_parser
 from xml.sax.handler import ContentHandler
 
-if len(sys.argv) != 4:
-        sys.exit('Usage :python3 server.py config method option')
+if len(sys.argv) != 2:
+        sys.exit('Usage :python3 server.py config ')
 
 methods_client = 'REGISTER, INVITE, BYE, ACK'
 
@@ -119,6 +119,7 @@ if __name__ == "__main__":
             xml_config = sys.argv[1]
             client_tags = ReadXmlClient(xml_config)
             username = client_tags[0][1]['username']
+            print(username)
             passwd = client_tags[0][1]['passwd']
             uaserv_ip = client_tags[1][1]['ip']
             uaserv_port = str(client_tags[1][1]['puerto'])
@@ -130,12 +131,15 @@ if __name__ == "__main__":
 
             Loggin = Client_Log(file_log)
             Loggin.Begin_client()
+            serv = socketserver.UDPServer((SERVER_Proxy,PORT_Proxy), SIPRegisterHandler)
+            serv.serve_forever()
 
+    except ConnectionRefusedError:
+        Loggin.ConnectionRefused_log()
+        sys.exit('Error: No server listening at '+ SERVER_Proxy+ ' port ' + str(PORT_Proxy))
+    except KeyboardInterrupt:
+        print("client finsh")
+        sys.exit()
 
-    serv = socketserver.UDPServer((SERVER_Proxy,PORT_Proxy), SIPRegisterHandler)
-    try:
-        serv.serve_forever()
     except KeyboardInterrupt:
         print('servidor finalizado')
-
-    print("Lanzando servidor UDP de eco...")
