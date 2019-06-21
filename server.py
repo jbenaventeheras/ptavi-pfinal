@@ -122,7 +122,7 @@ if __name__ == "__main__":
             print(username)
             passwd = client_tags[0][1]['passwd']
             uaserv_ip = client_tags[1][1]['ip']
-            uaserv_port = str(client_tags[1][1]['puerto'])
+            uaserv_port = int(client_tags[1][1]['puerto'])
             audio_port = (client_tags[2][1]['puerto'])
             SERVER_Proxy = client_tags[3][1]['ip']
             PORT_Proxy = int(client_tags[3][1]['puerto'])
@@ -131,7 +131,7 @@ if __name__ == "__main__":
 
             Loggin = Client_Log(file_log)
             Loggin.Begin_client()
-            serv = socketserver.UDPServer((SERVER_Proxy,PORT_Proxy), SIPRegisterHandler)
+            serv = socketserver.UDPServer((uaserv_ip, uaserv_port), SIPRegisterHandler)
             serv.serve_forever()
 
     except ConnectionRefusedError:
