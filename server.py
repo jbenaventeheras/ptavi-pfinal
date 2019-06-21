@@ -89,6 +89,14 @@ class Client_Log:
         log_write.write(mess)
         log_write.close()
 
+    def receive(self, ip, port, send_mess):
+        Hora_inicio = time.strftime("%Y%m%d%H%M%S ", time.gmtime(time.time()))
+        mess = Hora_inicio + ' recived from' + ip + ':' + str(port) + ': '
+        mess += send_mess
+        log_write = open(self.file, 'a')
+        log_write.write(mess)
+        log_write.close()
+
 class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 
     def handle(self):
@@ -103,12 +111,18 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 
             receive_array = line.decode('utf-8').split()
             print(receive_array)
+            dest_ip = receive_array[5]
+            dest_RPTport = receive_array[7]
+            print(dest_RPTport)
+
+            print(dest_ip)
+            Loggin.receive(dest_ip, dest_RPTport, str(line))
 
             if 'INVITE' in receive_array:
-                print('hola')
+                print('hola2')
 
 
-            if 'REGISTER' in receive_array:
+            if 'ACK' in receive_array:
                 print('hola')
 
 
@@ -140,6 +154,5 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("client finsh")
         sys.exit()
-
     except KeyboardInterrupt:
         print('servidor finalizado')
