@@ -146,13 +146,12 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 
                 print(receive_array[1])
                 if username_dest in self.dicc:
-                    print('hola')
                     print(username_dest)
                     dest_ip = self.dicc.get(username_dest).split()[0]
-                    dest_ip = dst_ip.split(':')[1].split()[0]
+                    dest_ip = dest_ip.split(':')[1].split()[0]
                     dest_port = self.dicc.get(username_dest).split()[1]
-                    print(dst_ip)
-                    print(dst_port)
+                    print(dest_ip)
+                    print(dest_port)
                     try:
                         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
                             my_socket.connect((dest_ip, int(dest_port)))
@@ -163,6 +162,10 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                                 self.wfile.write(bytes(str(line), 'utf-8'))
                     except:
                         print('user not found')
+                else:
+
+                    print( 'user: '+ username_dest +' not registered')
+
 
 
             if 'REGISTER' in receive_array:
@@ -176,26 +179,24 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                         self.dicc[username] = ('Ip:' + ip + user_rtp_port + ' Registered: ' + str(expired) + str(expires))
                         mess ='SIP/2.0 200 OK\r\n\r\n'
                         self.wfile.write(bytes(mess, 'utf-8'))
-                        print('user ' + username + ' log in')
+                        print('User:' + username + ' already registered loggged in')
                         if expires == 0:
                             del self.dicc[username]
                 else:
                     if 4  == len(receive_array):
                         passwd = self.Passw_dicc[username]
-                        print(passwd)
-
+                        print('New user: ' + username +'try to register, sent Authentication request')
                         Encr_Pass = EncryptPass(RandomNum, passwd)
                         mess ='SIP/2.0 401 Unauthorized WWW-Authenticate: Digest nonce= ' + RandomNum
                         self.wfile.write(bytes(mess, 'utf-8'))
                     else:
                         if 5  == len(receive_array):
                             print(receive_array)
-
                             passwd = self.Passw_dicc[username]
                             Encr_Pass = EncryptPass(RandomNum, passwd)
                             print(Encr_Pass)
                             if Encr_Pass == receive_array[4]:
-                                print('registrado usuario:' + username)
+                                print('New user: ' + username + 'Registered')
                                 self.dicc[username] = ('Ip:' + ip + ' ' + user_rtp_port + ' Registered: ' + str(expired) + str(expires))
 
 

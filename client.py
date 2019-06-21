@@ -146,10 +146,9 @@ if __name__ == "__main__":
                         send_mess = method + ' sip:' + username + ':' + uaserv_port + ' SIP/2.0\r\n' + 'Expires:' + option + '\r\n\r\n' + Encr_Pass
                         my_socket.send(bytes(send_mess, 'utf-8') + b'\r\n')
                         Loggin.sent_to(uaserv_ip, uaserv_port, send_mess)
-                    if '100' in data:
-                        aud_port_emisor = receive[-2]
-                        LINE = 'ACK' + ' sip:' + option + ' SIP/2.0\r\n\r\n'
-                        my_socket.send(bytes(LINE, 'utf-8') + b'\r\n')
+                    if '180' in data:
+                        mess = 'ACK' + ' sip:' + method + ' SIP/2.0\r\n\r\n'
+                        my_socket.send(bytes(mess, 'utf-8') + b'\r\n')
                         log.sent_to(proxy_ip, proxy_port, LINE)
                         data = my_socket.recv(1024)
                         print('Envio ack: ' + LINE)
