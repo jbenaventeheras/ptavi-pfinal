@@ -13,7 +13,7 @@ from xml.sax import make_parser
 from xml.sax.handler import ContentHandler
 
 if len(sys.argv) != 4:
-        sys.exit('Usage :python3 uaclient.py config method option')
+        sys.exit('Usage :python3 client.py config method option')
 
 methods_client = 'REGISTER, INVITE, BYE, ACK'
 
@@ -123,9 +123,9 @@ if __name__ == "__main__":
                         Loggin.sent_to(uaserv_ip, uaserv_port, send_mess)
                         print('hola')
                     if str.upper(method) == 'INVITE':
-                        send_mess = method +' ' + option + ' SIP/2.0\r\n'
+                        send_mess = ' ' + method +' ' + option + ' SIP/2.0\r\n'
                         send_mess += 'Content-Type: application/sdp\r\n\r\n'
-                        send_mess += 'v=0\r\n' + 'o=' + username + ' ' + uaserv_ip + '\r\n'
+                        send_mess += 'v=0\r\n' + 'o=' + username + ' ' + uaserv_ip + ' \r\n'
                         send_mess += 's=sesion\r\n' + 't=0\r\n'
                         send_mess += 'm=audio ' + audio_port + ' RTP\r\n\r\n'
                         my_socket.send(bytes(send_mess, 'utf-8') + b'\r\n')
@@ -137,6 +137,7 @@ if __name__ == "__main__":
 
 
                     data = my_socket.recv(1024).decode('utf-8')
+                    print(data)
 
 
 
@@ -147,6 +148,7 @@ if __name__ == "__main__":
                         my_socket.send(bytes(send_mess, 'utf-8') + b'\r\n')
                         Loggin.sent_to(uaserv_ip, uaserv_port, send_mess)
                     if '180' in data:
+                        print(hola)
                         mess = 'ACK' + ' sip:' + method + ' SIP/2.0\r\n\r\n'
                         my_socket.send(bytes(mess, 'utf-8') + b'\r\n')
                         log.sent_to(proxy_ip, proxy_port, LINE)

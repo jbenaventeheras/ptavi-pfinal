@@ -137,7 +137,12 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 
             receive_array = line.decode('utf-8').split()
             print(receive_array)
+            print(line)
 
+            if '180' in receive_array:
+                print("llegoooooo" + str(line))
+                self.wfile.write(bytes(str(line), 'utf-8'))
+                
             if 'INVITE' in receive_array:
                 username_dest =  receive_array[1].split(':')[1]
                 username = receive_array[6].split('=')[1]
@@ -154,12 +159,13 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                     print(dest_port)
                     try:
                         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
+
                             my_socket.connect((dest_ip, int(dest_port)))
-                            my_socket.send(bytes(line, 'utf-8'))
-                            data = sck.recv(1024)
-                            line = data.decode("utf-8")
-                            if '180' in receive_array:
-                                self.wfile.write(bytes(str(line), 'utf-8'))
+                            print("hola")
+                            my_socket.send(bytes(str(line), 'utf-8'))
+
+
+
                     except:
                         print('user not found')
                 else:

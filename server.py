@@ -119,7 +119,11 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
             Loggin.receive(dest_ip, dest_RPTport, str(line))
 
             if 'INVITE' in receive_array:
-                print('hola2')
+                with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
+                    mess = 'SIP/2.0 100 Trying' + ' SIP/2.0 180 Ringing '+ ' SIP/2.0 200 OK\r\n\r\n'
+                    mess += 
+                    my_socket.connect((SERVER_Proxy, int(PORT_Proxy)))
+                    my_socket.send(bytes(str(mess), 'utf-8'))
 
 
             if 'ACK' in receive_array:
