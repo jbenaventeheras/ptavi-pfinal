@@ -99,6 +99,7 @@ class Client_Log:
 
 class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 
+    dest_RTPport_Array =[]
     def handle(self):
         """handle."""
 
@@ -109,27 +110,36 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
             if len(line) == 0:
                 break
 
+
             receive_array = line.decode('utf-8').split()
             print(receive_array)
-            dest_ip = receive_array[5]
-            dest_RPTport = receive_array[7]
-            print(dest_RPTport)
 
-            print(dest_ip)
-            Loggin.receive(dest_ip, dest_RPTport, str(line))
+
+
 
             if 'INVITE' in receive_array:
+                    dest_ip = receive_array[5]
+                    dest_RPTport = receive_array[7]
+                    self.dest_RTPport_Array.append(receive_array[7])
+                    Loggin.receive(dest_ip, dest_RPTport, str(line))
+                    print(dest_ip)
+                    print(dest_RPTport)
                     mess = 'SIP/2.0 100 Trying' + ' SIP/2.0 180 Ringing '+ ' SIP/2.0 200 OK\r\n\r\n'
-                    #mess +=
                     mess += 'Content-Type: application/sdp\r\n\r\n'
                     mess += 'v=0\r\n' + 'o=' + username + ' ' + uaserv_ip + ' \r\n'
                     mess += 's=sesion\r\n' + 't=0\r\n'
                     mess += 'm=audio ' + audio_port + ' RTP\r\n\r\n'
                     self.wfile.write(bytes(mess, 'utf-8'))
 
-
             if 'ACK' in receive_array:
-                print('hola')
+
+                    cvlc = 'cvlc rtp://@' + uaserv_ip + ':' + self.dest_RTPport_Array[0]
+                    print('Ejecutando... ', cvlc)
+                    os.system(cvlc)
+                    RTP = './mp32rtp -i ' + uaserv_ip + ' -p '
+                    RTP += self.dest_RTPport_Array[0] + " < " + audio
+                    print('Ejecutando... ', RTP)
+                    os.system(RTP)
 
 
 if __name__ == "__main__":

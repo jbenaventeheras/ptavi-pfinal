@@ -150,9 +150,10 @@ if __name__ == "__main__":
                     if '180' in data:
                         data_array = data.split()
                         aud_port_emisor = data_array[17]
-                        mess = 'ACK' + ' sip:' + method + ' SIP/2.0\r\n\r\n'
+                        user_ack = data_array[12].split('=')[1]
+                        print(user_ack)
+                        mess = ' ACK' + ' sip:' + user_ack + ' SIP/2.0\r\n\r\n'
                         my_socket.send(bytes(mess, 'utf-8') + b'\r\n')
-                        print(data.decode('utf-8'))
                         cvlc = 'cvlc rtp://@' + uaserv_ip + ':' + aud_port_emisor
                         print('Ejecutando... ', cvlc)
                         os.system(cvlc)
@@ -162,7 +163,7 @@ if __name__ == "__main__":
                         os.system(RTP)
                     if '200' in data:
                         print('ok received')
-                    if '100' in data:
+                    if '400' in data:
                         print('bad request received')
 
         except ConnectionRefusedError:
