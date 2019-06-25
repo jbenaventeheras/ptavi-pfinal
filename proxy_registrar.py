@@ -139,19 +139,20 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
             print(receive_array)
             print(line)
 
-            if '180' in receive_array:
-                print("llegoooooo" + str(line))
-                self.wfile.write(bytes(str(line), 'utf-8'))
-                
+
+
+
             if 'INVITE' in receive_array:
                 username_dest =  receive_array[1].split(':')[1]
                 username = receive_array[6].split('=')[1]
+                username1 = username
                 print(username_dest)
                 print(username)
 
-                print(receive_array[1])
+
+
+
                 if username_dest in self.dicc:
-                    print(username_dest)
                     dest_ip = self.dicc.get(username_dest).split()[0]
                     dest_ip = dest_ip.split(':')[1].split()[0]
                     dest_port = self.dicc.get(username_dest).split()[1]
@@ -163,11 +164,15 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                             my_socket.connect((dest_ip, int(dest_port)))
                             print("hola")
                             my_socket.send(bytes(str(line), 'utf-8'))
-
-
+                            data = my_socket.recv(1024)
+                            msg = data.decode("utf-8")
+                            print(msg)
+                            if '180' in msg:
+                                self.wfile.write(data)
 
                     except:
                         print('user not found')
+
                 else:
 
                     print( 'user: '+ username_dest +' not registered')

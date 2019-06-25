@@ -148,25 +148,22 @@ if __name__ == "__main__":
                         my_socket.send(bytes(send_mess, 'utf-8') + b'\r\n')
                         Loggin.sent_to(uaserv_ip, uaserv_port, send_mess)
                     if '180' in data:
-                        print(hola)
+                        print('180 recived')
                         mess = 'ACK' + ' sip:' + method + ' SIP/2.0\r\n\r\n'
                         my_socket.send(bytes(mess, 'utf-8') + b'\r\n')
-                        log.sent_to(proxy_ip, proxy_port, LINE)
                         data = my_socket.recv(1024)
                         print('Envio ack: ' + LINE)
                         print(data.decode('utf-8'))
                         cvlc = 'cvlc rtp://@' + uaserv_ip + ':' + aud_port_emisor
-                        log.ejecutando(cvlc)
                         print('Ejecutando... ', cvlc)
                         os.system(cvlc)
                         RTP = './mp32rtp -i ' + uaserv_ip + ' -p '
                         RTP += aud_port_emisor + " < " + audio
-                        log.ejecutando(RTP)
                         print('Ejecutando... ', RTP)
                         os.system(RTP)
                     if '200' in data:
                         print('ok received')
-                    if '400' in data:
+                    if '100' in data:
                         print('bad request received')
 
         except ConnectionRefusedError:
