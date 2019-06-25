@@ -149,9 +149,6 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                 print(username_dest)
                 print(username)
 
-
-
-
                 if username_dest in self.dicc:
                     dest_ip = self.dicc.get(username_dest).split()[0]
                     dest_ip = dest_ip.split(':')[1].split()[0]

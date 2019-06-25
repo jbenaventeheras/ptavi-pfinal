@@ -148,11 +148,10 @@ if __name__ == "__main__":
                         my_socket.send(bytes(send_mess, 'utf-8') + b'\r\n')
                         Loggin.sent_to(uaserv_ip, uaserv_port, send_mess)
                     if '180' in data:
-                        print('180 recived')
+                        data_array = data.split()
+                        aud_port_emisor = data_array[17]
                         mess = 'ACK' + ' sip:' + method + ' SIP/2.0\r\n\r\n'
                         my_socket.send(bytes(mess, 'utf-8') + b'\r\n')
-                        data = my_socket.recv(1024)
-                        print('Envio ack: ' + LINE)
                         print(data.decode('utf-8'))
                         cvlc = 'cvlc rtp://@' + uaserv_ip + ':' + aud_port_emisor
                         print('Ejecutando... ', cvlc)

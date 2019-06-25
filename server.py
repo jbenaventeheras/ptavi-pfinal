@@ -121,8 +121,11 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
             if 'INVITE' in receive_array:
                     mess = 'SIP/2.0 100 Trying' + ' SIP/2.0 180 Ringing '+ ' SIP/2.0 200 OK\r\n\r\n'
                     #mess +=
+                    mess += 'Content-Type: application/sdp\r\n\r\n'
+                    mess += 'v=0\r\n' + 'o=' + username + ' ' + uaserv_ip + ' \r\n'
+                    mess += 's=sesion\r\n' + 't=0\r\n'
+                    mess += 'm=audio ' + audio_port + ' RTP\r\n\r\n'
                     self.wfile.write(bytes(mess, 'utf-8'))
-
 
 
             if 'ACK' in receive_array:
