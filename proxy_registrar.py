@@ -134,7 +134,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
             line = self.rfile.read()
             if len(line) == 0:
                 break
-
+            line_decode = line.decode('utf-8')
             receive_array = line.decode('utf-8').split()
             print(receive_array)
             print(line)
@@ -183,7 +183,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 
                             my_socket.connect((dest_ip, int(dest_port)))
                             print("hola")
-                            my_socket.send(bytes(str(line), 'utf-8'))
+                            my_socket.send(bytes(line_decode, 'utf-8'))
                             data = my_socket.recv(1024)
                             msg = data.decode("utf-8")
                             print(msg)
