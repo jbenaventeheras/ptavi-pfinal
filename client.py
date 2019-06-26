@@ -148,6 +148,9 @@ if __name__ == "__main__":
                         send_mess = method + ' sip:' + username + ':' + uaserv_port + ' SIP/2.0\r\n' + 'Expires:' + option + '\r\n\r\n' + Encr_Pass
                         my_socket.send(bytes(send_mess, 'utf-8') + b'\r\n')
                         Loggin.sent_to(uaserv_ip, uaserv_port, send_mess)
+                        data = my_socket.recv(1024).decode('utf-8')
+                        print('data')
+
                     if '180' in data:
                         data_array = data.split()
                         aud_port_emisor = data_array[17]
@@ -155,19 +158,17 @@ if __name__ == "__main__":
                         print(user_ack)
                         mess = ' ACK' + ' sip:' + user_ack + ' SIP/2.0\r\n\r\n'
                         my_socket.send(bytes(mess, 'utf-8') + b'\r\n')
-                        mp32rtp = './mp32rtp -i ' + uaserv_ip + ' -p ' + uaserv_port
+                        mp32rtp = './mp32rtp -i ' + uaserv_ip + ' -p ' + aud_port_emisor
                         mp32rtp += ' < ' + audio
-                        cvlc = 'cvlc rtp://@' + uaserv_ip + ':' + uaserv_port + ' 2>/dev/null'
+                        cvlc = 'cvlc rtp://@' + uaserv_ip + ':' + aud_port_emisor + ' 2>/dev/null'
                         print('Ejecutando... ', cvlc)
                         print('Ejecutando... ', mp32rtp)
                         os.system(cvlc)
                         os.system(mp32rtp)
-
-
                     if '200' in data:
                         print('ok received')
-                    if '400' in data:
-                        print('bad request received')
+                    if '404' in data:
+                        print('User not found')
 
         except ConnectionRefusedError:
             Loggin.ConnectionRefused_log()

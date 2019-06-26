@@ -223,7 +223,8 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                         print('user not found')
 
                 else:
-
+                    mess ='SIP/2.0 404 User Not Found\r\n\r\n'
+                    self.wfile.write(bytes(mess, 'utf-8'))
                     print( 'user: '+ username_dest +' not registered')
 
 
