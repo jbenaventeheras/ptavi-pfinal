@@ -139,6 +139,35 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
             print(receive_array)
             print(line)
 
+            if 'BYE' in receive_array:
+                username_dest =  receive_array[1].split(':')[1]
+                print(username_dest)
+
+                if username_dest in self.dicc:
+                    dest_ip = self.dicc.get(username_dest).split()[0]
+                    dest_ip = dest_ip.split(':')[1].split()[0]
+                    dest_port = self.dicc.get(username_dest).split()[1]
+                    print(dest_ip)
+                    print(dest_port)
+                    try:
+                        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
+
+                            my_socket.connect((dest_ip, int(dest_port)))
+                            print("hola")
+                            my_socket.send(bytes(line_decode, 'utf-8'))
+                            data = my_socket.recv(1024)
+                            msg = data.decode("utf-8")
+                            if '200' in msg:
+                                self.wfile.write(data)
+
+
+                    except:
+                        print('user not found')
+
+                else:
+
+                    print( 'user: '+ username_dest +' not registered')
+
             if 'ACK' in receive_array:
                 username_dest =  receive_array[1].split(':')[1]
                 print(username_dest)

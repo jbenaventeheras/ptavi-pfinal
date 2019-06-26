@@ -118,6 +118,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 
 
             if 'INVITE' in receive_array:
+
                     dest_ip = receive_array[7]
                     dest_RPTport = receive_array[11]
                     self.dest_RTPport_Array.append(receive_array[11])
@@ -140,6 +141,11 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                     RTP += self.dest_RTPport_Array[0] + " < " + audio
                     print('Ejecutando... ', RTP)
                     os.system(RTP)
+
+            if 'BYE' in receive_array:
+                
+                    mess = 'SIP/2.0 200 OK\r\n\r\n'
+                    self.wfile.write(bytes(mess, 'utf-8'))
 
 
 if __name__ == "__main__":

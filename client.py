@@ -132,9 +132,9 @@ if __name__ == "__main__":
                         my_socket.send(bytes(send_mess, 'utf-8') + b'\r\n')
                         Loggin.sent_to(uaserv_ip, uaserv_port, send_mess)
                     if str.upper(method) == 'BYE':
-                        send_mess = METHOD + ' sip:' + OPTION + ' SIP/2.0\r\n\r\n'
+                        send_mess = method + ' sip:' + option + ' SIP/2.0\r\n\r\n'
                         my_socket.send(bytes(send_mess, 'utf-8') + b'\r\n')
-                        Loggin.sent_to(self, uaserv_ip, uaserv_port, send_mess)
+                        Loggin.sent_to(uaserv_ip, uaserv_port, send_mess)
 
 
                     data = my_socket.recv(1024).decode('utf-8')
