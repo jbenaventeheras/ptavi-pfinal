@@ -258,7 +258,8 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                             if Encr_Pass == receive_array[4]:
                                 print('New user: ' + username + 'Registered')
                                 self.dicc[username] = ('Ip:' + ip + ' ' + user_rtp_port + ' Registered: ' + str(expired) + str(expires))
-
+                                mess ='SIP/2.0 200 OK\r\n\r\n'
+                                self.wfile.write(bytes(mess, 'utf-8'))
 
             with open('registered.json', 'w') as json_file:
                 json.dump(self.dicc, json_file, indent=2)

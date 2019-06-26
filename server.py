@@ -134,16 +134,16 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 
             if 'ACK' in receive_array:
 
-                    cvlc = 'cvlc rtp://@' + uaserv_ip + ':' + self.dest_RTPport_Array[0]
+                    mp32rtp = './mp32rtp -i ' + uaserv_ip + ' -p ' + uaserv_port
+                    mp32rtp += ' < ' + audio
+                    cvlc = 'cvlc rtp://@' + uaserv_ip + ':' + uaserv_port
                     print('Ejecutando... ', cvlc)
+                    print('Ejecutando... ', mp32rtp)
                     os.system(cvlc)
-                    RTP = './mp32rtp -i ' + uaserv_ip + ' -p '
-                    RTP += self.dest_RTPport_Array[0] + " < " + audio
-                    print('Ejecutando... ', RTP)
-                    os.system(RTP)
+                    os.system(mp32rtp)
 
             if 'BYE' in receive_array:
-                
+
                     mess = 'SIP/2.0 200 OK\r\n\r\n'
                     self.wfile.write(bytes(mess, 'utf-8'))
 

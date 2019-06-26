@@ -155,13 +155,15 @@ if __name__ == "__main__":
                         print(user_ack)
                         mess = ' ACK' + ' sip:' + user_ack + ' SIP/2.0\r\n\r\n'
                         my_socket.send(bytes(mess, 'utf-8') + b'\r\n')
-                        cvlc = 'cvlc rtp://@' + uaserv_ip + ':' + aud_port_emisor
+                        mp32rtp = './mp32rtp -i ' + uaserv_ip + ' -p ' + uaserv_port
+                        mp32rtp += ' < ' + audio
+                        cvlc = 'cvlc rtp://@' + uaserv_ip + ':' + uaserv_port + ' 2>/dev/null'
                         print('Ejecutando... ', cvlc)
+                        print('Ejecutando... ', mp32rtp)
                         os.system(cvlc)
-                        RTP = './mp32rtp -i ' + uaserv_ip + ' -p '
-                        RTP += aud_port_emisor + " < " + audio
-                        print('Ejecutando... ', RTP)
-                        os.system(RTP)
+                        os.system(mp32rtp)
+
+
                     if '200' in data:
                         print('ok received')
                     if '400' in data:
