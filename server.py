@@ -118,9 +118,9 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 
 
             if 'INVITE' in receive_array:
-                    dest_ip = receive_array[5]
-                    dest_RPTport = receive_array[7]
-                    self.dest_RTPport_Array.append(receive_array[7])
+                    dest_ip = receive_array[7]
+                    dest_RPTport = receive_array[11]
+                    self.dest_RTPport_Array.append(receive_array[11])
                     Loggin.receive(dest_ip, dest_RPTport, str(line))
                     print(dest_ip)
                     print(dest_RPTport)
