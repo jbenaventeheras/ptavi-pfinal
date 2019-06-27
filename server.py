@@ -131,6 +131,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                     mess += 's=sesion\r\n' + 't=0\r\n'
                     mess += 'm=audio ' + audio_port + ' RTP\r\n\r\n'
                     self.wfile.write(bytes(mess, 'utf-8'))
+                    Loggin.sent_to(dest_ip, dest_RPTport, mess)
 
             if 'ACK' in receive_array:
 
@@ -141,11 +142,14 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                     RTP += self.dest_RTPport_Array[0] + " < " + audio
                     print('Ejecutando... ', RTP)
                     os.system(RTP)
+                    Loggin.sent_to(uaserv_ip, self.dest_RTPport_Array[0], 'enviado RTP')
+
 
             if 'BYE' in receive_array:
 
                     mess = 'SIP/2.0 200 OK\r\n\r\n'
                     self.wfile.write(bytes(mess, 'utf-8'))
+
 
 
 if __name__ == "__main__":
@@ -155,7 +159,7 @@ if __name__ == "__main__":
             xml_config = sys.argv[1]
             client_tags = ReadXmlClient(xml_config)
             username = client_tags[0][1]['username']
-            print(username)
+            print('starting client: ' + username)
             passwd = client_tags[0][1]['passwd']
             uaserv_ip = client_tags[1][1]['ip']
             uaserv_port = int(client_tags[1][1]['puerto'])

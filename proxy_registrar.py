@@ -153,7 +153,6 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
 
                             my_socket.connect((dest_ip, int(dest_port)))
-                            print("hola")
                             my_socket.send(bytes(line_decode, 'utf-8'))
                             data = my_socket.recv(1024)
                             msg = data.decode("utf-8")
@@ -182,7 +181,6 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
 
                             my_socket.connect((dest_ip, int(dest_port)))
-                            print("hola")
                             my_socket.send(bytes(str(line), 'utf-8'))
                             data = my_socket.recv(1024)
 

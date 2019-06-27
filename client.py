@@ -121,24 +121,25 @@ if __name__ == "__main__":
                         send_mess = method + ' sip:' + username + ':' + uaserv_port + ' SIP/2.0\r\n' + 'Expires:' + option + '\r\n\r\n'
                         my_socket.send(bytes(send_mess, 'utf-8') + b'\r\n')
                         Loggin.sent_to(uaserv_ip, uaserv_port, send_mess)
-                        print(send_mess)
+                        print('sending mess: ' + send_mess)
                     if str.upper(method) == 'INVITE':
                         send_mess =  method +' sip:' + option + ' SIP/2.0\r\n'
                         send_mess += 'Content-Type: application/sdp\r\n\r\n'
                         send_mess += 'v=0\r\n' + 'o=' + username + ' ' + uaserv_ip + ' \r\n'
                         send_mess += 's=sesion\r\n' + 't=0\r\n'
                         send_mess += 'm=audio ' + audio_port + ' RTP\r\n\r\n'
-                        print(send_mess)
+                        print('sending mess: ' + send_mess)
                         my_socket.send(bytes(send_mess, 'utf-8') + b'\r\n')
                         Loggin.sent_to(uaserv_ip, uaserv_port, send_mess)
                     if str.upper(method) == 'BYE':
                         send_mess = method + ' sip:' + option + ' SIP/2.0\r\n\r\n'
                         my_socket.send(bytes(send_mess, 'utf-8') + b'\r\n')
+                        print('sending mess: ' + send_mess)
                         Loggin.sent_to(uaserv_ip, uaserv_port, send_mess)
 
 
                     data = my_socket.recv(1024).decode('utf-8')
-                    print(data)
+                    print( 'recived: ' data)
 
 
 
@@ -149,7 +150,6 @@ if __name__ == "__main__":
                         my_socket.send(bytes(send_mess, 'utf-8') + b'\r\n')
                         Loggin.sent_to(uaserv_ip, uaserv_port, send_mess)
                         data = my_socket.recv(1024).decode('utf-8')
-                        print('data')
 
                     if '180' in data:
                         data_array = data.split()
@@ -160,7 +160,7 @@ if __name__ == "__main__":
                         my_socket.send(bytes(mess, 'utf-8') + b'\r\n')
                         mp32rtp = './mp32rtp -i ' + uaserv_ip + ' -p ' + aud_port_emisor
                         mp32rtp += ' < ' + audio
-                        cvlc = 'cvlc rtp://@' + uaserv_ip + ':' + aud_port_emisor + ' 2>/dev/null'
+                        cvlc = 'cvlc rtp://@' + uaserv_ip + ':' + aud_port_emisor
                         print('Ejecutando... ', cvlc)
                         print('Ejecutando... ', mp32rtp)
                         os.system(cvlc)
