@@ -126,7 +126,6 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 
         self.register2json()
         self.ReadPasswords()
-        print(self.Passw_dicc)
 
 
         while 1:
