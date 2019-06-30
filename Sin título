@@ -1,5 +1,0 @@
-“Reestablecer usuarios conectados -- Entrego con registered.json, vacio para
-que se compruebe el correcto funcionamento del register y el envio del sdp en
-ambos lados y como quedan guardados en el json una vez ya registrados en el
-json si no son eliminados o bien manualmente en el archivo o bien con un register
-expires 0, comprobamos que el j.son ya existente los contiene.
