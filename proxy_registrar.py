@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""Programa user agent client"""
+"""Programa proxy_registrar"""
 
 import json
 import os

@@ -103,19 +103,14 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
     def handle(self):
         """handle."""
 
-
         while 1:
             # Leyendo línea a línea lo que nos envía el cliente
             line = self.rfile.read()
             if len(line) == 0:
                 break
 
-
             receive_array = line.decode('utf-8').split()
             print(receive_array)
-
-
-
 
             if 'INVITE' in receive_array:
 
@@ -153,7 +148,6 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 
 
 if __name__ == "__main__":
-
 
     try:
             xml_config = sys.argv[1]
