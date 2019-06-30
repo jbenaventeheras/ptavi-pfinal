@@ -29,14 +29,14 @@ class XMLHandlerClient(ContentHandler):
             'log': ['path'],
             'audio': ['path']}
 
-    def startElement(self, name, atributos):   # Signals the start of an atributos in non-namespace mode.
+    def startElement(self, name, atributos):
         dicc = {}
         if name in self.atributos:
             for att in self.atributos[name]:
                 dicc[att] = atributos.get(att, '')
             self.array_atributos.append([name, dicc])
 
-    def get_att(self):      # Devuelve la lista con elementos encontrados
+    def get_att(self):
         return self.array_atributos
 
 def ReadXmlClient(xml_config):

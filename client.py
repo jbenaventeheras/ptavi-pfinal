@@ -17,6 +17,7 @@ if len(sys.argv) != 4:
 
 methods_client = 'REGISTER, INVITE, BYE, ACK'
 
+
 class XMLHandlerClient(ContentHandler):
 
     def __init__(self):     # Declaramos las listas de los elementos
@@ -29,7 +30,7 @@ class XMLHandlerClient(ContentHandler):
             'log': ['path'],
             'audio': ['path']}
 
-    def startElement(self, name, atributos):   # Signals the start of an atributos in non-namespace mode.
+    def startElement(self, name, atributos):
         dicc = {}
         if name in self.atributos:
             for att in self.atributos[name]:
@@ -39,8 +40,8 @@ class XMLHandlerClient(ContentHandler):
     def get_att(self):      # Devuelve la lista con elementos encontrados
         return self.array_atributos
 
-def ReadXmlClient(xml_config):
 
+def ReadXmlClient(xml_config):
 
     try:
         parser = make_parser()
@@ -53,6 +54,8 @@ def ReadXmlClient(xml_config):
         sys.exit('fichero XML no encontrado')
 
     return configtags
+
+
 def EncryptPass(nonce, passwd, encoding='utf-8'):
 
     Encrypt_Password = hashlib.md5()
@@ -60,6 +63,7 @@ def EncryptPass(nonce, passwd, encoding='utf-8'):
     Encrypt_Password.update(bytes(passwd, encoding))
     Encrypt_Password.digest()
     return Encrypt_Password.hexdigest()
+
 
 class Client_Log:
 
@@ -78,7 +82,7 @@ class Client_Log:
 
     def ConnectionRefused_log(self):
         log_write = open(self.file, 'a')
-        log_write.write('Error: No server listening at '+ SERVER_Proxy+ 'port ' + str(PORT_Proxy))
+        log_write.write('Error: No server listen at ' + SERVER_Proxy + 'port ' + str(PORT_Proxy))
         log_write.close()
 
     def sent_to(self, ip, port, send_mess):
@@ -113,20 +117,21 @@ if __name__ == "__main__":
                 Loggin = Client_Log(file_log)
                 Loggin.Begin_client()
 
-
                 with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
                     my_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
                     my_socket.connect((SERVER_Proxy, PORT_Proxy))
                     if str.upper(method) == 'REGISTER':
-                        send_mess = method + ' sip:' + username + ':' + uaserv_port + ' SIP/2.0\r\n' + 'Expires:' + option + '\r\n\r\n'
+                        send_mess = method + ' sip:' + username + ':'
+                        send_mess += uaserv_port + ' SIP/2.0\r\n' + 'Expires:'
+                        send_mess += option + '\r\n\r\n'
                         my_socket.send(bytes(send_mess, 'utf-8') + b'\r\n')
                         Loggin.sent_to(uaserv_ip, uaserv_port, send_mess)
                         print('sending mess: ' + send_mess)
                     if str.upper(method) == 'INVITE':
-                        send_mess =  method +' sip:' + option + ' SIP/2.0\r\n'
+                        send_mess = method + ' sip:' + option + ' SIP/2.0\r\n'
                         send_mess += 'Content-Type: application/sdp\r\n\r\n'
-                        send_mess += 'v=0\r\n' + 'o=' + username + ' ' + uaserv_ip + ' \r\n'
-                        send_mess += 's=sesion\r\n' + 't=0\r\n'
+                        send_mess += 'v=0\r\n' + 'o=' + username + ' ' + uaserv_ip
+                        send_mess += ' \r\n' + 's=sesion\r\n' + 't=0\r\n'
                         send_mess += 'm=audio ' + audio_port + ' RTP\r\n\r\n'
                         print('sending mess: ' + send_mess)
                         my_socket.send(bytes(send_mess, 'utf-8') + b'\r\n')
@@ -137,16 +142,15 @@ if __name__ == "__main__":
                         print('sending mess: ' + send_mess)
                         Loggin.sent_to(uaserv_ip, uaserv_port, send_mess)
 
-
                     data = my_socket.recv(1024).decode('utf-8')
-                    print( 'recived: ' data)
-
-
+                    print('recived: ' + data)
 
                     if '401' in data:
                         RandomNum = data.split()[6]
                         Encr_Pass = EncryptPass(RandomNum, passwd)
-                        send_mess = method + ' sip:' + username + ':' + uaserv_port + ' SIP/2.0\r\n' + 'Expires:' + option + '\r\n\r\n' + Encr_Pass
+                        send_mess = method + ' sip:' + username + ':'
+                        send_mess += uaserv_port + ' SIP/2.0\r\n' + 'Expires:'
+                        send_mess += option + '\r\n\r\n' + Encr_Pass
                         my_socket.send(bytes(send_mess, 'utf-8') + b'\r\n')
                         Loggin.sent_to(uaserv_ip, uaserv_port, send_mess)
                         data = my_socket.recv(1024).decode('utf-8')
@@ -158,8 +162,8 @@ if __name__ == "__main__":
                         print(user_ack)
                         mess = ' ACK' + ' sip:' + user_ack + ' SIP/2.0\r\n\r\n'
                         my_socket.send(bytes(mess, 'utf-8') + b'\r\n')
-                        mp32rtp = './mp32rtp -i ' + uaserv_ip + ' -p ' + aud_port_emisor
-                        mp32rtp += ' < ' + audio
+                        mp32rtp = './mp32rtp -i ' + uaserv_ip + ' -p '
+                        mp32rtp += aud_port_emisor + ' < ' + audio
                         cvlc = 'cvlc rtp://@' + uaserv_ip + ':' + aud_port_emisor
                         print('Ejecutando... ', cvlc)
                         print('Ejecutando... ', mp32rtp)
@@ -172,7 +176,7 @@ if __name__ == "__main__":
 
         except ConnectionRefusedError:
             Loggin.ConnectionRefused_log()
-            sys.exit('Error: No server listening at '+ SERVER_Proxy+ ' port ' + str(PORT_Proxy))
+            sys.exit('Error: No server listening at ' + SERVER_Proxy + ' port ' + str(PORT_Proxy))
         except KeyboardInterrupt:
             print("client finsh")
             sys.exit()

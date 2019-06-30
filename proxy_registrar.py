@@ -135,19 +135,16 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                 break
             line_decode = line.decode('utf-8')
             receive_array = line.decode('utf-8').split()
-            print(receive_array)
-            print(line)
+            print( 'Recieved mess: '+ line_decode)
 
             if 'BYE' in receive_array:
                 username_dest =  receive_array[1].split(':')[1]
-                print(username_dest)
 
                 if username_dest in self.dicc:
                     dest_ip = self.dicc.get(username_dest).split()[0]
                     dest_ip = dest_ip.split(':')[1].split()[0]
                     dest_port = self.dicc.get(username_dest).split()[1]
-                    print(dest_ip)
-                    print(dest_port)
+
                     try:
                         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
 
@@ -174,8 +171,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                     dest_ip = self.dicc.get(username_dest).split()[0]
                     dest_ip = dest_ip.split(':')[1].split()[0]
                     dest_port = self.dicc.get(username_dest).split()[1]
-                    print(dest_ip)
-                    print(dest_port)
+
                     try:
                         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
 
@@ -195,8 +191,6 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
             if 'INVITE' in receive_array:
                 username_dest =  receive_array[1].split(':')[1]
                 username = receive_array[6].split('=')[1]
-                print(username_dest)
-                print(username)
 
                 if username_dest in self.dicc:
                     dest_ip = self.dicc.get(username_dest).split()[0]
@@ -237,9 +231,11 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                         self.dicc[username] = ('Ip:' + ip + user_rtp_port + ' Registered: ' + str(expired) + str(expires))
                         mess ='SIP/2.0 200 OK\r\n\r\n'
                         self.wfile.write(bytes(mess, 'utf-8'))
-                        print('User:' + username + ' already registered loggged in')
+                        print('User:' + username + ' already registered, loggged in')
                         if expires == 0:
                             del self.dicc[username]
+                            print('User: ' + username + 'Deleted')
+
                 else:
                     if 4  == len(receive_array):
                         passwd = self.Passw_dicc[username]
